@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f8ff">
+
+    <title>READ-X | Explore Publications</title>
+
+    <link rel="stylesheet" href="./read.css">
+
+    <!-- Supabase connection -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase.js" defer></script>
+
+    <!-- Publication system -->
+    <script src="./read.js" defer></script>
+</head>
+
+<body>
+
+    <main class="read-container">
+
+        <!-- HEADER -->
+
+        <header class="read-header">
+            <a href="./home.html" class="read-logo">
+                READ<span>-X</span>
+            </a>
+            <p>Discover ideas. Explore knowledge.</p>
+        </header>
+
+
+        <!-- SEARCH -->
+
+        <section class="search-section">
+            <div class="search-box">
+
+                <span class="search-icon">⌕</span>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search for articles..."
+                    autocomplete="off"
+                    aria-label="Search publications">
+
+                <button
+                    type="button"
+                    id="clearSearch"
+                    aria-label="Clear search"
+                    hidden>
+                    ×
+                </button>
+
+            </div>
+        </section>
+
+
+        <!-- CATEGORIES -->
+
+        <section class="category-section">
+
+            <div class="category-heading">
+                <h2>Explore Categories</h2>
+                <span>Choose a topic</span>
+            </div>
+
+            <div
+                class="category-list"
+                id="categoryList">
+
+                <button
+                    type="button"
+                    class="category-button active"
+                    data-category="All">
+                    All
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- PUBLICATIONS -->
+
+        <section class="publications-section">
+
+            <div class="publication-heading">
+
+                <div>
+                    <h1>Publications</h1>
+                    <p>Ideas and knowledge shared by our community.</p>
+                </div>
+
+                <span id="publicationCount">Loading...</span>
+
+            </div>
+
+
+            <!-- DATABASE CONNECTION MESSAGE -->
+
+            <div
+                id="connectionMessage"
+                class="connection-message"
+                hidden>
+            </div>
+
+
+            <!-- ARTICLE LIST -->
+
+            <div
+                class="publication-list"
+                id="publicationList">
+
+                <div class="loading-state">
+                    <div class="loader"></div>
+                    <p>Loading publications...</p>
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY / ERROR STATE -->
+
+            <div
+                class="empty-state"
+                id="emptyState"
+                hidden>
+
+                <div class="empty-icon">⌕</div>
+
+                <h3 id="emptyTitle">No publications found</h3>
+
+                <p id="emptyDescription">
+                    Try another search or choose a different category.
+                </p>
+
+                <button
+                    type="button"
+                    id="resetFilters">
+                    Show all publications
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- FULL ARTICLE READER -->
+
+        <section
+            class="article-reader"
+            id="articleReader"
+            hidden>
+
+            <div class="reader-topbar">
+
+                <button
+                    type="button"
+                    id="backToArticles"
+                    class="reader-back">
+                    ← Back to publications
+                </button>
+
+                <span class="reader-brand">READ-X</span>
+
+            </div>
+
+
+            <article class="reader-content">
+
+                <span
+                    class="reader-category"
+                    id="readerCategory">
+                    Article
+                </span>
+
+                <h1 id="readerTitle"></h1>
+
+
+                <!-- AUTHOR -->
+
+                <div class="reader-author">
+
+                    <div
+                        class="author-avatar"
+                        id="authorAvatar">
+                        R
+                    </div>
+
+                    <div>
+                        <strong id="readerAuthor"></strong>
+                        <span>Publication author</span>
+                    </div>
+
+                </div>
+
+
+                <!-- ARTICLE IMAGE -->
+
+                <img
+                    id="readerImage"
+                    class="reader-image"
+                    alt="Article cover"
+                    hidden>
+
+
+                <!-- DESCRIPTION -->
+
+                <p
+                    class="reader-description"
+                    id="readerDescription">
+                </p>
+
+
+                <!-- ARTICLE CONTENT -->
+
+                <div
+                    class="reader-article-text"
+                    id="readerArticleText">
+                </div>
+
+
+                <!-- READER FOOTER -->
+
+                <div class="reader-footer">
+
+                    <p>
+                        Published by
+                        <strong>READ-X Team X</strong>
+                    </p>
+
+                    <span>Read. Think. Share.</span>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- PAGE FOOTER -->
+
+        <footer class="read-footer">
+
+            <strong>READ-X</strong>
+
+            <p>Read. Think. Share.</p>
+
+            <a href="./home.html">Back to Home</a>
+
+        </footer>
+
+    </main>
+
+
+    <!-- FLOATING BOTTOM NAVIGATION -->
+
+    <nav class="floating-nav" aria-label="Main navigation">
+
+        <a href="./home.html" class="nav-item">
+            <span class="nav-icon">⌂</span>
+            <span>Home</span>
+        </a>
+
+        <a href="./read.html" class="nav-item active">
+            <span class="nav-icon">▤</span>
+            <span>Read</span>
+        </a>
+
+        <a href="./share.html" class="nav-item">
+            <span class="nav-icon">＋</span>
+            <span>Share</span>
+        </a>
+
+        <a href="./saved.html" class="nav-item">
+            <span class="nav-icon">♡</span>
+            <span>Saved</span>
+        </a>
+
+    </nav>
+
+</body>
+</html>

@@ -1,0 +1,652 @@
+
+/* ==========================================
+   READ-X | HOME PAGE
+   Modern Glassmorphism Design
+   Blue • Ice Blue • Lavender
+========================================== */
+
+
+/* 1. ROOT VARIABLES */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #3478d4;
+    --primary-dark: #225cae;
+
+    --background: #f4f8ff;
+    --white: #ffffff;
+
+    --text: #192b45;
+    --muted: #718096;
+
+    --glass: rgba(255, 255, 255, 0.68);
+    --border: rgba(255, 255, 255, 0.85);
+
+    --shadow: 0 12px 35px rgba(49, 91, 150, 0.09);
+}
+
+
+/* 2. RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 5% 5%, #dcecff, transparent 35%),
+        radial-gradient(circle at 95% 20%, #e9e2ff, transparent 35%),
+        radial-gradient(circle at 50% 85%, #dcefff, transparent 40%),
+        var(--background);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* 3. HEADER */
+
+.header {
+    width: 100%;
+    max-width: 1150px;
+    margin: auto;
+    padding: 22px 6%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.login-link {
+    padding: 11px 23px;
+    border: 1px solid rgba(52, 120, 212, 0.2);
+    border-radius: 30px;
+
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+
+    color: var(--primary-dark);
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.3s;
+}
+
+.login-link:hover {
+    background: var(--primary);
+    color: white;
+}
+
+
+/* 4. MAIN */
+
+main {
+    width: 100%;
+    max-width: 1150px;
+    margin: auto;
+    padding: 15px 6% 130px;
+}
+
+.content-section {
+    margin-top: 65px;
+}
+
+
+/* 5. WELCOME SECTION */
+
+.welcome-section {
+    position: relative;
+    overflow: hidden;
+
+    padding: 75px 45px;
+
+    border: 1px solid var(--border);
+    border-radius: 30px;
+
+    background: linear-gradient(
+        125deg,
+        rgba(255,255,255,0.9),
+        rgba(224,239,255,0.78),
+        rgba(238,232,255,0.8)
+    );
+
+    backdrop-filter: blur(22px);
+    box-shadow: var(--shadow);
+}
+
+.welcome-section::after {
+    content: "RX";
+    position: absolute;
+    right: 35px;
+    bottom: -45px;
+
+    font-size: 190px;
+    font-weight: 800;
+    letter-spacing: -15px;
+
+    color: rgba(52, 120, 212, 0.045);
+    pointer-events: none;
+}
+
+.welcome-label,
+.section-label {
+    margin-bottom: 14px;
+
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.welcome-section h1 {
+    max-width: 650px;
+
+    font-size: clamp(42px, 7vw, 72px);
+    line-height: 1.12;
+    letter-spacing: -3px;
+    font-weight: 800;
+}
+
+.welcome-section h1 span {
+    display: block;
+    color: var(--primary);
+}
+
+.welcome-description {
+    max-width: 480px;
+    margin-top: 20px;
+
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+
+/* 6. SECTION HEADINGS */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.section-heading h2,
+.content-section h2 {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+}
+
+.live-indicator {
+    padding: 9px 14px;
+    border-radius: 30px;
+
+    background: rgba(52, 120, 212, 0.09);
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* 7. ANNOUNCEMENTS */
+
+.announcement-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.announcement-card {
+    padding: 26px;
+
+    border: 1px solid var(--border);
+    border-radius: 23px;
+
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.announcement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(49, 91, 150, 0.14);
+}
+
+.announcement-tag {
+    display: inline-block;
+    padding: 7px 13px;
+    margin-bottom: 17px;
+
+    border-radius: 20px;
+    background: #e7f1ff;
+
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.announcement-card h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.announcement-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.announcement-card small {
+    display: block;
+    margin-top: 20px;
+
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* 8. ABOUT SECTION */
+
+.about-section {
+    padding: 35px;
+
+    border: 1px solid var(--border);
+    border-radius: 25px;
+
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+}
+
+.about-section h2 {
+    margin-bottom: 20px;
+}
+
+.about-section > p:not(.section-label) {
+    max-width: 750px;
+    margin-top: 12px;
+
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+
+/* 9. LATEST UPDATES */
+
+.update-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.update-card {
+    padding: 26px;
+
+    border: 1px solid var(--border);
+    border-radius: 23px;
+
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+
+    transition: transform 0.3s;
+}
+
+.update-card:hover {
+    transform: translateY(-4px);
+}
+
+.update-status {
+    display: inline-block;
+    padding: 7px 13px;
+    margin-bottom: 17px;
+
+    border-radius: 20px;
+    background: #efebff;
+
+    color: #7561bd;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.update-card h3 {
+    margin-bottom: 12px;
+    font-size: 17px;
+}
+
+.update-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+/* 10. EXPLORE SECTION */
+
+.explore-section {
+    margin-top: 65px;
+    padding: 45px 25px;
+
+    text-align: center;
+
+    border: 1px solid var(--border);
+    border-radius: 26px;
+
+    background: linear-gradient(
+        120deg,
+        rgba(221,237,255,0.92),
+        rgba(240,235,255,0.92)
+    );
+
+    box-shadow: var(--shadow);
+}
+
+.explore-section h2 {
+    margin-bottom: 12px;
+    font-size: 27px;
+}
+
+.explore-section p {
+    margin-bottom: 25px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.explore-button {
+    display: inline-block;
+    padding: 14px 28px;
+
+    border-radius: 30px;
+    background: var(--primary);
+
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow: 0 8px 20px rgba(52, 120, 212, 0.22);
+    transition: 0.3s;
+}
+
+.explore-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+}
+
+
+/* 11. FLOATING BOTTOM NAVIGATION */
+
+.bottom-nav {
+    position: fixed;
+    z-index: 1000;
+
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+
+    width: min(440px, calc(100% - 30px));
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 12px 10px;
+
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.76);
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    box-shadow: 0 10px 40px rgba(43,83,140,0.18);
+}
+
+.nav-item {
+    min-width: 65px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    padding: 8px 12px;
+    border-radius: 16px;
+
+    color: #8997aa;
+    transition: 0.25s;
+}
+
+.nav-item span {
+    font-size: 23px;
+    line-height: 1;
+}
+
+.nav-item small {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: rgba(52,120,212,0.11);
+    color: var(--primary);
+}
+
+.share-nav {
+    color: var(--primary);
+}
+
+.share-nav span {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    background: var(--primary);
+    color: white;
+
+    font-size: 25px;
+}
+
+
+/* 12. TABLET RESPONSIVENESS */
+
+@media (max-width: 768px) {
+
+    .header {
+        padding: 19px 5%;
+    }
+
+    main {
+        padding: 12px 5% 120px;
+    }
+
+    .welcome-section {
+        padding: 55px 28px;
+        border-radius: 25px;
+    }
+
+    .welcome-section h1 {
+        font-size: 53px;
+    }
+
+    .welcome-section::after {
+        font-size: 140px;
+        right: 15px;
+    }
+
+    .content-section {
+        margin-top: 48px;
+    }
+
+    .announcement-list,
+    .update-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* 13. MOBILE RESPONSIVENESS */
+
+@media (max-width: 480px) {
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .login-link {
+        padding: 9px 17px;
+        font-size: 11px;
+    }
+
+    .welcome-section {
+        padding: 45px 22px;
+        border-radius: 22px;
+    }
+
+    .welcome-section h1 {
+        font-size: 43px;
+        letter-spacing: -2px;
+    }
+
+    .welcome-description {
+        font-size: 13px;
+    }
+
+    .welcome-section::after {
+        font-size: 110px;
+        right: 5px;
+        bottom: -20px;
+    }
+
+    .section-heading h2,
+    .content-section h2 {
+        font-size: 21px;
+    }
+
+    .announcement-card,
+    .update-card {
+        padding: 21px;
+    }
+
+    .about-section {
+        padding: 25px 21px;
+    }
+
+    .explore-section {
+        padding: 35px 18px;
+    }
+
+    .explore-section h2 {
+        font-size: 23px;
+    }
+
+    .bottom-nav {
+        bottom: 13px;
+        padding: 9px 5px;
+        border-radius: 21px;
+    }
+
+    .nav-item {
+        min-width: 58px;
+        padding: 8px 7px;
+    }
+
+    .nav-item span {
+        font-size: 21px;
+    }
+
+    .nav-item small {
+        font-size: 9px;
+    }
+}
+
+
+/* 14. ACCESSIBILITY */
+
+a:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* HEADER ACTIONS */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-link,
+.login-link {
+    text-decoration: none;
+    padding: 9px 17px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.admin-link {
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.admin-link:hover {
+    background: #dbeafe;
+}
+
+.login-link {
+    color: white;
+    background: #2563eb;
+}
+
+.login-link:hover {
+    background: #1d4ed8;
+}

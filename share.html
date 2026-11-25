@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f8ff">
+
+    <title>READ-X | Share Your Ideas</title>
+
+    <link rel="stylesheet" href="./share.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase.js" defer></script>
+    <script src="./share.js" defer></script>
+</head>
+
+<body>
+
+    <main class="share-container">
+
+        <header class="share-header">
+            <a href="./home.html" class="logo">READ<span>-X</span></a>
+            <p>Your ideas deserve to be shared.</p>
+        </header>
+
+
+        <section class="share-intro">
+            <span class="intro-label">COMMUNITY PUBLICATIONS</span>
+            <h1>Share your knowledge.</h1>
+            <p>
+                Write something meaningful, share what you know,
+                and help others discover new ideas.
+            </p>
+        </section>
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        <section class="success-message" id="successMessage" hidden>
+            <div class="success-icon">✓</div>
+            <h2>Successfully published!</h2>
+            <p>
+                Your article is now published on READ-X.
+                Thank you for sharing your knowledge.
+            </p>
+            <a href="./read.html" class="success-button">
+                Explore publications
+            </a>
+        </section>
+
+
+        <!-- ARTICLE FORM -->
+
+        <form id="publicationForm" class="publication-form">
+
+            <div class="form-heading">
+                <h2>Create your publication</h2>
+                <p>Complete the details below before publishing.</p>
+            </div>
+
+
+            <div class="form-group">
+                <label for="articleTitle">Article title</label>
+
+                <input
+                    type="text"
+                    id="articleTitle"
+                    maxlength="150"
+                    placeholder="Enter an interesting title"
+                    required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="articleCategory">Choose a category</label>
+
+                <select id="articleCategory" required>
+                    <option value="">Select a category</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Education">Education</option>
+                    <option value="Science">Science</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Innovation">Innovation</option>
+                    <option value="Environment">Environment</option>
+                    <option value="Health">Health</option>
+                    <option value="Business">Business</option>
+                    <option value="Culture">Culture</option>
+                    <option value="News">News</option>
+                    <option value="General">General</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="articleDescription">Short description</label>
+
+                <textarea
+                    id="articleDescription"
+                    rows="3"
+                    maxlength="400"
+                    placeholder="Briefly explain what your article is about..."
+                    required></textarea>
+
+                <span class="field-hint">
+                    Keep it clear and interesting.
+                </span>
+            </div>
+
+
+            <div class="form-group">
+                <label for="articleContent">Write your complete article</label>
+
+                <textarea
+                    id="articleContent"
+                    class="article-editor"
+                    rows="14"
+                    placeholder="Start writing your article here..."
+                    required></textarea>
+
+                <span class="field-hint">
+                    Share your ideas in your own words.
+                </span>
+            </div>
+
+
+            <!-- IMAGE UPLOAD -->
+
+            <div class="form-group">
+                <label for="articleImage">Article photo (optional)</label>
+
+                <label for="articleImage" class="image-upload">
+                    <span class="upload-icon">＋</span>
+                    <strong>Add an article photo</strong>
+                    <span>Choose an image from your device</span>
+                </label>
+
+                <input
+                    type="file"
+                    id="articleImage"
+                    accept="image/jpeg,image/png,image/webp"
+                    hidden>
+
+                <div class="image-preview" id="imagePreview" hidden>
+                    <img id="previewImage" alt="Article image preview">
+                    <button type="button" id="removeImage">
+                        Remove photo
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="publishing-note">
+                <strong>Before publishing</strong>
+                <p>
+                    Make sure your article is accurate, respectful,
+                    and suitable for the READ-X community.
+                </p>
+            </div>
+
+
+            <div class="form-message" id="formMessage" role="status" hidden></div>
+
+
+            <button type="submit" class="publish-button" id="publishButton">
+                <span id="publishButtonText">Publish article →</span>
+            </button>
+
+            <p class="login-note">
+                You'll only need to sign in when you publish.
+            </p>
+
+        </form>
+
+    </main>
+
+
+    <!-- FLOATING NAVIGATION -->
+
+    <nav class="floating-nav" aria-label="Main navigation">
+
+        <a href="./home.html" class="nav-item">
+            <span class="nav-icon">⌂</span>
+            <span>Home</span>
+        </a>
+
+        <a href="./read.html" class="nav-item">
+            <span class="nav-icon">▤</span>
+            <span>Read</span>
+        </a>
+
+        <a href="./share.html" class="nav-item active">
+            <span class="nav-icon">＋</span>
+            <span>Share</span>
+        </a>
+
+        <a href="./saved.html" class="nav-item">
+            <span class="nav-icon">♡</span>
+            <span>Saved</span>
+        </a>
+
+    </nav>
+
+</body>
+</html>

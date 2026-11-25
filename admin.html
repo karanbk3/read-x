@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>READ-X | Admin Dashboard</title>
+
+    <link rel="stylesheet" href="./admin.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ADMIN ACCESS CHECK -->
+    <div id="adminLoading" class="loading-screen">
+        <div class="loader"></div>
+        <p>Verifying administrator access...</p>
+    </div>
+
+    <!-- ACCESS DENIED -->
+    <section id="accessDenied" class="access-denied hidden">
+        <div class="denied-card">
+            <div class="denied-icon">🔒</div>
+            <h1>Access Restricted</h1>
+            <p>This page is only available to authorized READ-X administrators.</p>
+
+            <a href="./home.html" class="primary-btn">
+                Return to Home
+            </a>
+
+            <button id="deniedLoginBtn" class="secondary-btn">
+                Login to Admin Account
+            </button>
+        </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="adminDashboard" class="admin-layout hidden">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">R</div>
+                <div>
+                    <h2>READ-X</h2>
+                    <span>ADMIN PANEL</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">MAIN MENU</p>
+
+                <button class="nav-item active" data-section="overview">
+                    <span>▦</span> Overview
+                </button>
+
+                <button class="nav-item" data-section="announcements">
+                    <span>📢</span> Announcements
+                </button>
+
+                <button class="nav-item" data-section="updates">
+                    <span>🚀</span> Update Plans
+                </button>
+
+                <button class="nav-item" data-section="activity">
+                    <span>📋</span> Admin Activity
+                </button>
+            </div>
+
+            <div class="sidebar-bottom">
+                <a href="./home.html" class="home-link">
+                    <span>←</span> Return to Home
+                </a>
+
+                <button id="logoutBtn" class="logout-btn">
+                    <span>↪</span> Sign Out
+                </button>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOP HEADER -->
+            <header class="topbar">
+                <div>
+                    <p class="topbar-label">READ-X MANAGEMENT</p>
+                    <h1 id="pageTitle">Dashboard Overview</h1>
+                </div>
+
+                <div class="admin-profile">
+                    <div class="admin-avatar">A</div>
+                    <div>
+                        <strong>Administrator</strong>
+                        <span id="adminEmail">Loading account...</span>
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- OVERVIEW -->
+            <section id="overviewSection" class="content-section">
+
+                <div class="welcome-banner">
+                    <div>
+                        <span class="welcome-tag">ADMINISTRATOR PANEL</span>
+                        <h2>Welcome to READ-X Management</h2>
+                        <p>Manage announcements, update plans and monitor administrative activity.</p>
+                    </div>
+                    <div class="welcome-symbol">✦</div>
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📢</div>
+                        <p>Total Announcements</p>
+                        <h2 id="announcementCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🚀</div>
+                        <p>Update Plans</p>
+                        <h2 id="updateCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <p>Admin Activities</p>
+                        <h2 id="activityCount">0</h2>
+                    </div>
+
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Quick Management</h3>
+                            <p>Choose what you want to manage.</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button class="quick-action" data-section="announcements">
+                            <span>📢</span>
+                            <strong>Manage Announcements</strong>
+                            <small>Publish news and important notices</small>
+                        </button>
+
+                        <button class="quick-action" data-section="updates">
+                            <span>🚀</span>
+                            <strong>Manage Update Plans</strong>
+                            <small>Share upcoming READ-X improvements</small>
+                        </button>
+
+                        <button class="quick-action" data-section="activity">
+                            <span>📋</span>
+                            <strong>View Admin Activity</strong>
+                            <small>Review management history</small>
+                        </button>
+
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ANNOUNCEMENTS -->
+            <section id="announcementsSection" class="content-section hidden">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Announcements</h2>
+                        <p>Create and manage official READ-X announcements.</p>
+                    </div>
+
+                    <button id="newAnnouncementBtn" class="primary-btn">
+                        + New Announcement
+                    </button>
+                </div>
+
+                <div id="announcementForm" class="form-panel hidden">
+
+                    <h3 id="announcementFormTitle">Create Announcement</h3>
+
+                    <form id="announcementEditor">
+
+                        <input type="hidden" id="announcementId">
+
+                        <label for="announcementTitle">Announcement Title</label>
+                        <input type="text" id="announcementTitle" required maxlength="150"
+                            placeholder="Enter announcement title">
+
+                        <label for="announcementDescription">Short Description</label>
+                        <textarea id="announcementDescription" rows="3" required
+                            placeholder="Write a short introduction"></textarea>
+
+                        <label for="announcementContent">Full Details</label>
+                        <textarea id="announcementContent" rows="7"
+                            placeholder="Write the complete announcement"></textarea>
+
+                        <label for="announcementStatus">Publication Status</label>
+                        <select id="announcementStatus">
+                            <option value="draft">Save as Draft</option>
+                            <option value="published">Publish Now</option>
+                        </select>
+
+                        <div class="form-actions">
+                            <button type="submit" class="primary-btn" id="saveAnnouncementBtn">
+                                Save Announcement
+                            </button>
+
+                            <button type="button" id="cancelAnnouncementBtn" class="secondary-btn">
+                                Cancel
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div id="announcementList" class="data-list"></div>
+
+            </section>
+
+
+            <!-- UPDATE PLANS -->
+            <section id="updatesSection" class="content-section hidden">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Update Plans</h2>
+                        <p>Control the latest and upcoming READ-X improvements.</p>
+                    </div>
+
+                    <button id="newUpdateBtn" class="primary-btn">
+                        + New Update Plan
+                    </button>
+                </div>
+
+                <div id="updateForm" class="form-panel hidden">
+
+                    <h3 id="updateFormTitle">Create Update Plan</h3>
+
+                    <form id="updateEditor">
+
+                        <input type="hidden" id="updateId">
+
+                        <label for="updateTitle">Update Title</label>
+                        <input type="text" id="updateTitle" required maxlength="150"
+                            placeholder="Enter update title">
+
+                        <label for="updateDescription">Short Description</label>
+                        <textarea id="updateDescription" rows="3" required
+                            placeholder="Briefly explain this update"></textarea>
+
+                        <label for="updateDetails">Full Details</label>
+                        <textarea id="updateDetails" rows="6"
+                            placeholder="Explain the planned improvements"></textarea>
+
+                        <label for="updateStatus">Progress Status</label>
+                        <select id="updateStatus">
+                            <option value="planned">Planned</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+
+                        <label for="updateDate">Target Date</label>
+                        <input type="date" id="updateDate">
+
+                        <label class="publish-toggle">
+                            <input type="checkbox" id="updatePublished">
+                            Show this update plan publicly
+                        </label>
+
+                        <div class="form-actions">
+                            <button type="submit" class="primary-btn" id="saveUpdateBtn">
+                                Save Update Plan
+                            </button>
+
+                            <button type="button" id="cancelUpdateBtn" class="secondary-btn">
+                                Cancel
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div id="updateList" class="data-list"></div>
+
+            </section>
+
+
+            <!-- ADMIN ACTIVITY -->
+            <section id="activitySection" class="content-section hidden">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Admin Activity</h2>
+                        <p>Review actions performed through the READ-X admin panel.</p>
+                    </div>
+                </div>
+
+                <div id="activityList" class="data-list"></div>
+
+            </section>
+
+
+            <!-- NOTIFICATION -->
+            <div id="adminMessage" class="admin-message hidden"></div>
+
+        </main>
+
+    </div>
+
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase.js"></script>
+    <script src="./admin.js"></script>
+
+</body>
+</html>

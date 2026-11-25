@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Saved Articles | READ-X</title>
+
+    <link rel="stylesheet" href="./saved.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <a href="./home.html" class="logo">
+            READ-<span>X</span>
+        </a>
+
+        <a href="./login.html" class="signin-button" id="signinButton">
+            Sign in
+        </a>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-container">
+
+
+        <!-- PAGE INTRODUCTION -->
+
+        <section class="saved-hero">
+
+            <div class="hero-content">
+
+                <p class="section-label">YOUR PERSONAL COLLECTION</p>
+
+                <h1>
+                    Your Saved
+                    <span>Articles.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Keep interesting ideas close.
+                    Save articles and continue reading whenever you want.
+                </p>
+
+            </div>
+
+            <div class="hero-decoration">
+                RX
+            </div>
+
+        </section>
+
+
+        <!-- SAVED ARTICLE SECTION -->
+
+        <section class="saved-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">YOUR LIBRARY</p>
+
+                    <h2>Saved Articles</h2>
+
+                </div>
+
+                <span class="saved-count" id="savedCount">
+                    0 Saved
+                </span>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-container">
+
+                <span class="search-icon">⌕</span>
+
+                <input
+                    type="search"
+                    id="savedSearch"
+                    placeholder="Search your saved articles..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <!-- FILTER BUTTONS -->
+
+            <div class="filter-buttons">
+
+                <button
+                    class="filter-button active"
+                    data-filter="all"
+                    type="button"
+                >
+                    All Saved
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="unread"
+                    type="button"
+                >
+                    Unread
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="read"
+                    type="button"
+                >
+                    Read
+                </button>
+
+            </div>
+
+
+            <!-- ARTICLE LIST -->
+
+            <div class="saved-article-list" id="savedArticleList">
+
+                <!-- Articles will appear here using JavaScript -->
+
+            </div>
+
+
+            <!-- EMPTY MESSAGE -->
+
+            <div class="empty-state" id="emptyState" hidden>
+
+                <div class="empty-icon">
+                    ♡
+                </div>
+
+                <h3>No saved articles yet</h3>
+
+                <p>
+                    When you find an interesting article,
+                    save it and it will appear here.
+                </p>
+
+                <a href="./read.html" class="explore-button">
+                    Explore Articles
+                </a>
+
+            </div>
+
+
+            <!-- SEARCH EMPTY MESSAGE -->
+
+            <div class="empty-state" id="searchEmptyState" hidden>
+
+                <div class="empty-icon">
+                    ⌕
+                </div>
+
+                <h3>No matching articles</h3>
+
+                <p>
+                    Try searching with another title,
+                    category or author.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FLOATING BOTTOM NAVIGATION -->
+
+    <nav class="floating-nav">
+
+        <a href="./home.html" class="nav-item">
+
+            <span class="nav-icon">⌂</span>
+
+            <span>Home</span>
+
+        </a>
+
+
+        <a href="./read.html" class="nav-item">
+
+            <span class="nav-icon">▤</span>
+
+            <span>Read</span>
+
+        </a>
+
+
+        <a href="./share.html" class="nav-item share-nav">
+
+            <span class="nav-icon">＋</span>
+
+            <span>Share</span>
+
+        </a>
+
+
+        <a href="./save.html" class="nav-item active">
+
+            <span class="nav-icon">♡</span>
+
+            <span>Saved</span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="./supabase.js"></script>
+
+    <script src="./saved.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,457 @@
+
+/* ==========================================
+   READ-X | LOGIN & SIGN UP
+   Modern Authentication Design
+========================================== */
+
+/* 1. BASIC SETTINGS */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --light-blue: #eff6ff;
+    --text: #172554;
+    --muted: #64748b;
+    --white: #ffffff;
+    --border: #e2e8f0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+
+    background:
+        radial-gradient(circle at 10% 10%, #dbeafe 0, transparent 35%),
+        radial-gradient(circle at 90% 90%, #e0e7ff 0, transparent 35%),
+        linear-gradient(135deg, #f8fbff, #eef4ff);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px 16px;
+}
+
+
+/* 2. MAIN CONTAINER */
+
+.auth-container {
+    width: 100%;
+    max-width: 460px;
+    margin: auto;
+}
+
+
+/* 3. BRAND SECTION */
+
+.brand-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.brand-logo {
+    display: inline-block;
+    color: #172554;
+    text-decoration: none;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.brand-logo span {
+    color: var(--primary);
+}
+
+.brand-tagline {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+
+/* 4. AUTHENTICATION CARD */
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+
+    padding: 32px;
+
+    box-shadow:
+        0 20px 60px rgba(37, 99, 235, 0.10),
+        0 5px 20px rgba(15, 23, 42, 0.04);
+}
+
+
+/* 5. HEADING */
+
+.auth-heading {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-heading h1 {
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 9px;
+}
+
+.auth-heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* 6. LOGIN AND SIGN UP TABS */
+
+.auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    background: #f1f5f9;
+    padding: 5px;
+    border-radius: 12px;
+
+    margin-bottom: 25px;
+}
+
+.auth-tab {
+    border: none;
+    background: transparent;
+
+    padding: 12px;
+    border-radius: 9px;
+
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.auth-tab.active {
+    background: var(--white);
+    color: var(--primary);
+
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+
+/* 7. FORM ELEMENTS */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-group label span {
+    color: var(--muted);
+    font-weight: 400;
+}
+
+.form-group input {
+    width: 100%;
+    height: 49px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    padding: 0 14px;
+
+    background: #fbfdff;
+    color: var(--text);
+
+    font-size: 14px;
+    outline: none;
+
+    transition: 0.25s;
+}
+
+.form-group input::placeholder {
+    color: #94a3b8;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    background: var(--white);
+
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.09);
+}
+
+
+/* 8. FORGOT PASSWORD */
+
+.forgot-password {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -5px;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+
+/* 9. PRIMARY BUTTON */
+
+.primary-button {
+    width: 100%;
+    min-height: 50px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #1d4ed8
+    );
+
+    color: var(--white);
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+}
+
+.primary-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* 10. AUTHENTICATION MESSAGE */
+
+.auth-message {
+    display: none;
+    margin-top: 15px;
+    padding: 11px 13px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.auth-message.success {
+    display: block;
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.auth-message.error {
+    display: block;
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+
+/* 11. DIVIDER */
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 25px 0;
+}
+
+.divider span {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.divider p {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 700;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+
+/* 12. FACEBOOK BUTTON */
+
+.facebook-button {
+    width: 100%;
+    min-height: 50px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: #1877f2;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.facebook-button:hover {
+    background: #1665d8;
+    transform: translateY(-2px);
+}
+
+.facebook-icon {
+    width: 23px;
+    height: 23px;
+
+    border-radius: 50%;
+    background: white;
+    color: #1877f2;
+
+    font-size: 20px;
+    font-weight: 900;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coming-soon {
+    font-size: 9px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 6px;
+    border-radius: 5px;
+}
+
+
+/* 13. SWITCH LOGIN / SIGN UP */
+
+.switch-auth {
+    text-align: center;
+    margin-top: 25px;
+
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.switch-auth button {
+    border: none;
+    background: none;
+
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.switch-auth button:hover {
+    text-decoration: underline;
+}
+
+
+/* 14. FOOTER */
+
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 2;
+}
+
+.auth-footer strong {
+    color: var(--primary);
+}
+
+.auth-footer a {
+    display: inline-block;
+    margin-top: 5px;
+
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* 15. HIDDEN ELEMENTS */
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* 16. MOBILE RESPONSIVE */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 20px 13px;
+    }
+
+    .auth-card {
+        padding: 25px 20px;
+        border-radius: 19px;
+    }
+
+    .brand-logo {
+        font-size: 32px;
+    }
+
+    .auth-heading h1 {
+        font-size: 24px;
+    }
+
+    .facebook-button {
+        font-size: 12px;
+        gap: 7px;
+    }
+
+    .coming-soon {
+        font-size: 8px;
+    }
+
+}

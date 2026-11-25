@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>READ-X | Login & Sign Up</title>
+
+    <link rel="stylesheet" href="./login.css">
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Connection -->
+    <script src="./supabase.js" defer></script>
+
+    <!-- Login JavaScript -->
+    <script src="./login.js" defer></script>
+</head>
+
+<body>
+
+    <main class="auth-container">
+
+        <!-- BRAND SECTION -->
+        <header class="brand-section">
+
+            <a href="./home.html" class="brand-logo">
+                READ<span>-X</span>
+            </a>
+
+            <p class="brand-tagline">
+                Read. Think. Share.
+            </p>
+
+        </header>
+
+
+        <!-- AUTHENTICATION CARD -->
+        <section class="auth-card">
+
+            <!-- WELCOME -->
+            <div class="auth-heading">
+
+                <h1 id="authTitle">Welcome Back!</h1>
+
+                <p id="authDescription">
+                    Login to continue your reading journey.
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN / SIGN UP TABS -->
+            <div class="auth-tabs">
+
+                <button
+                    type="button"
+                    class="auth-tab active"
+                    id="loginTab">
+
+                    Login
+
+                </button>
+
+                <button
+                    type="button"
+                    class="auth-tab"
+                    id="signupTab">
+
+                    Sign Up
+
+                </button>
+
+            </div>
+
+
+            <!-- AUTHENTICATION FORM -->
+            <form id="authForm">
+
+                <!-- FULL NAME -->
+                <div class="form-group" id="nameGroup" hidden>
+
+                    <label for="fullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your full name"
+                        autocomplete="name">
+
+                </div>
+
+
+                <!-- EMAIL -->
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                        required>
+
+                </div>
+
+
+                <!-- PHONE NUMBER -->
+                <div class="form-group" id="phoneGroup" hidden>
+
+                    <label for="phone">
+                        Phone Number <span>(Optional)</span>
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        autocomplete="tel">
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                        minlength="6">
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+                <div class="form-group" id="confirmPasswordGroup" hidden>
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Enter your password again"
+                        autocomplete="new-password">
+
+                </div>
+
+
+                <!-- FORGOT PASSWORD -->
+                <div class="forgot-password" id="forgotPassword">
+
+                    <a href="#" id="forgotPasswordLink">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- SUBMIT BUTTON -->
+                <button
+                    type="submit"
+                    class="primary-button"
+                    id="submitButton">
+
+                    Login
+
+                </button>
+
+
+                <!-- MESSAGE -->
+                <p id="authMessage" class="auth-message" aria-live="polite"></p>
+
+            </form>
+
+
+            <!-- DIVIDER -->
+            <div class="divider">
+
+                <span></span>
+
+                <p>OR CONTINUE WITH</p>
+
+                <span></span>
+
+            </div>
+
+
+            <!-- FACEBOOK BUTTON -->
+            <button
+                type="button"
+                class="facebook-button"
+                id="facebookButton">
+
+                <span class="facebook-icon">f</span>
+
+                Continue with Facebook
+
+
+            </button>
+
+
+            <!-- SWITCH LOGIN / SIGNUP -->
+            <p class="switch-auth" id="switchAuth">
+
+                Don't have an account?
+
+                <button type="button" id="switchAuthButton">
+                    Sign Up
+                </button>
+
+            </p>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="auth-footer">
+
+            <p>
+                © 2026 READ-X. All rights reserved.
+            </p>
+
+            <p>
+                Official Publisher: <strong>Team X</strong>
+            </p>
+
+            <a href="./home.html">
+                Back to Home
+            </a>
+
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
