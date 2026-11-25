@@ -1,0 +1,237 @@
+
+/* =================================
+   READ-X | WELCOME PAGE
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080d1c;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* MAIN CONTAINER */
+
+.welcome-container {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 8%;
+}
+
+/* BACKGROUND GLOW */
+
+.background-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(130px);
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.glow-one {
+    background: #2563eb;
+    top: 10%;
+    left: -150px;
+}
+
+.glow-two {
+    background: #9333ea;
+    bottom: -150px;
+    right: -100px;
+}
+
+/* NAVBAR */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 27px;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.nav-label {
+    color: #8b9bb8;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+/* WELCOME CONTENT */
+
+.welcome-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 70px 0;
+}
+
+.welcome-icon {
+    width: 85px;
+    height: 85px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(96, 165, 250, 0.12);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 25px;
+    font-size: 42px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 45px rgba(37, 99, 235, 0.2);
+}
+
+.small-heading {
+    color: #60a5fa;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: clamp(45px, 8vw, 85px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -3px;
+}
+
+h1 span {
+    color: #60a5fa;
+}
+
+.description {
+    max-width: 540px;
+    color: #a8b4ca;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-top: 25px;
+}
+
+/* START BUTTON */
+
+.start-button {
+    margin-top: 45px;
+    min-width: 250px;
+    padding: 20px 30px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 12px 35px rgba(37, 99, 235, 0.3);
+    transition: 0.3s ease;
+    animation: buttonPulse 2.5s infinite;
+}
+
+.start-button:hover {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 18px 45px rgba(96, 165, 250, 0.4);
+}
+
+.arrow {
+    font-size: 24px;
+    transition: 0.3s ease;
+}
+
+.start-button:hover .arrow {
+    transform: translateX(7px);
+}
+
+/* BOTTOM TEXT */
+
+.bottom-text {
+    margin-top: 25px;
+    color: #71809c;
+    font-size: 13px;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 20px 0 5px;
+    color: #65728b;
+    font-size: 12px;
+}
+
+/* ANIMATION */
+
+@keyframes buttonPulse {
+    0%, 100% {
+        box-shadow: 0 12px 35px rgba(37, 99, 235, 0.25);
+    }
+
+    50% {
+        box-shadow: 0 12px 45px rgba(124, 58, 237, 0.45);
+    }
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 600px) {
+
+    .welcome-container {
+        padding: 25px 6%;
+    }
+
+    .nav-label {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+    h1 {
+        letter-spacing: -2px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .start-button {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .welcome-content {
+        padding: 50px 0;
+    }
+}
