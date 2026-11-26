@@ -1,4 +1,3 @@
-
 /* ==========================================
    READ-X | ADMIN DASHBOARD
    Improved Authentication & Admin Verification
@@ -577,10 +576,7 @@ document.getElementById("cancelAnnouncementBtn")
 
         announcementEditor?.reset();
 
-    });
-
-
-/* 16. SAVE ANNOUNCEMENT */
+    });/* 16. SAVE ANNOUNCEMENT */
 
 announcementEditor?.addEventListener("submit", async event => {
 
@@ -873,6 +869,9 @@ const updateDetails =
 const updateStatus =
     document.getElementById("updateStatus");
 
+// Kept for compatibility with the existing HTML form.
+// The current app_updates table has no target_date column,
+// so this value is intentionally not sent to Supabase.
 const updateDate =
     document.getElementById("updateDate");
 
@@ -914,48 +913,29 @@ document.getElementById("cancelUpdateBtn")
 
         updateEditor?.reset();
 
-    });
+        if (updateId) updateId.value = "";
 
-
-/* 22. SAVE UPDATE PLAN */
+    });/* 22. SAVE UPDATE PLAN */
 
 updateEditor?.addEventListener("submit", async event => {
 
     event.preventDefault();
 
-    if (!currentAdmin) return;
+    if (!currentAdmin) {
+        showMessage("Please sign in as an administrator.", true);
+        return;
+    }
 
     const id = updateId?.value || "";
+    const isPublished = updatePublished?.checked === true;
+    const now = new Date().toISOString();
 
-    const update = {
-
-        title: updateTitle?.value.trim() || "",
-
-        description: updateDescription?.value.trim() || "",
-
-        details: updateDetails?.value.trim() || "",
-
-        status: updateStatus?.value || "planned",
-
-        target_date: updateDate?.value || null,
-
-        is_published: updatePublished?.checked === true,
-
-        author_name: "Team X",
-
-        updated_at: new Date().toISOString()
-
-    };
-
-    if (!update.title || !update.description) {
-
+    if (!updateTitle?.value.trim() || !updateDescription?.value.trim()) {
         showMessage(
             "Please complete the required fields.",
             true
         );
-
         return;
-
     }
 
     const saveButton =
@@ -968,21 +948,51 @@ updateEditor?.addEventListener("submit", async event => {
 
     try {
 
+        // Preserve the original publication date when editing
+        // an update plan that is already published.
+        let previousPublishedAt = null;
+
+        if (id) {
+            const { data: existingUpdate, error: fetchError } = await db
+                .from("app_updates")
+                .select("published_at")
+                .eq("id", id)
+                .single();
+
+            if (fetchError) throw fetchError;
+
+            previousPublishedAt = existingUpdate?.published_at || null;
+        }
+
+        // These field names match the actual app_updates table.
+        const update = {
+            title: updateTitle.value.trim(),
+            description: updateDescription.value.trim(),
+            content: updateDetails?.value.trim() || "",
+            update_status: updateStatus?.value || "planned",
+            status: isPublished ? "published" : "draft",
+            published_by: currentAdmin.id,
+            author_name: "Karan BC",
+            published_at: isPublished
+                ? (previousPublishedAt || now)
+                : null,
+            updated_at: now
+        };
+
         let result;
 
         if (id) {
-
             result = await db
                 .from("app_updates")
                 .update(update)
                 .eq("id", id);
-
         } else {
-
             result = await db
                 .from("app_updates")
-                .insert(update);
-
+                .insert({
+                    ...update,
+                    created_at: now
+                });
         }
 
         if (result.error) throw result.error;
@@ -993,17 +1003,22 @@ updateEditor?.addEventListener("submit", async event => {
         );
 
         updateForm?.classList.add("hidden");
-
         updateEditor?.reset();
 
-        showMessage("Update plan saved successfully!");
+        if (updateId) updateId.value = "";
+
+        showMessage(
+            isPublished
+                ? "Update plan saved and published successfully!"
+                : "Update plan saved as a draft successfully!"
+        );
 
         await loadUpdates();
         await loadDashboard();
 
     } catch (error) {
 
-        console.error(error);
+        console.error("READ-X update plan save error:", error);
 
         showMessage(
             error.message || "Could not save update plan.",
@@ -1040,7 +1055,7 @@ async function loadUpdates() {
 
     if (error) {
 
-        console.error(error);
+        console.error("READ-X update plan loading error:", error);
 
         showEmpty(
             updateList,
@@ -1064,64 +1079,68 @@ async function loadUpdates() {
 
     }
 
-    updateList.innerHTML = data.map(item => `
+    updateList.innerHTML = data.map(item => {
 
-        <article class="data-card">
+        const planStatus = item.update_status || "planned";
+        const publishStatus = item.status || "draft";
+        const author = item.author_name || "Karan BC";
+        const dateToShow = item.published_at || item.created_at;
 
-            <div class="data-card-main">
+        return `
+            <article class="data-card">
 
-                <span class="status ${escapeHTML(item.status)}">
-                    ${escapeHTML(item.status)}
-                </span>
+                <div class="data-card-main">
 
-                <h3>${escapeHTML(item.title)}</h3>
-
-                <p>${escapeHTML(item.description || "")}</p>
-
-                <div class="data-meta">
-
-                    <span>
-                        By ${escapeHTML(item.author_name || "Team X")}
+                    <span class="status ${escapeHTML(planStatus)}">
+                        ${escapeHTML(planStatus)}
                     </span>
 
-                    <span>
-                        Target: ${formatDate(item.target_date)}
-                    </span>
+                    <h3>${escapeHTML(item.title || "Untitled update")}</h3>
 
-                    <span>
-                        ${item.is_published ? "Public" : "Hidden"}
-                    </span>
+                    <p>${escapeHTML(item.description || "")}</p>
+
+                    <div class="data-meta">
+
+                        <span>
+                            By ${escapeHTML(author)}
+                        </span>
+
+                        <span>
+                            ${publishStatus === "published" ? "Published" : "Last updated"}:
+                            ${formatDate(dateToShow)}
+                        </span>
+
+                        <span>
+                            ${publishStatus === "published" ? "Public" : "Draft"}
+                        </span>
+
+                    </div>
 
                 </div>
 
-            </div>
+                <div class="data-actions">
 
-            <div class="data-actions">
+                    <button
+                        class="secondary-btn"
+                        data-action="edit-update"
+                        data-id="${escapeHTML(item.id)}">
+                        Edit
+                    </button>
 
-                <button
-                    class="secondary-btn"
-                    data-action="edit-update"
-                    data-id="${escapeHTML(item.id)}">
-                    Edit
-                </button>
+                    <button
+                        class="danger-btn"
+                        data-action="delete-update"
+                        data-id="${escapeHTML(item.id)}">
+                        Delete
+                    </button>
 
-                <button
-                    class="danger-btn"
-                    data-action="delete-update"
-                    data-id="${escapeHTML(item.id)}">
-                    Delete
-                </button>
+                </div>
 
-            </div>
+            </article>
+        `;
+    }).join("");
 
-        </article>
-
-    `).join("");
-
-}
-
-
-/* 24. UPDATE PLAN EDIT AND DELETE */
+}/* 24. UPDATE PLAN EDIT AND DELETE */
 
 updateList?.addEventListener("click", async event => {
 
@@ -1145,24 +1164,33 @@ updateList?.addEventListener("click", async event => {
             return;
         }
 
-        updateId.value = data.id;
-        updateTitle.value = data.title || "";
-        updateDescription.value = data.description || "";
-        updateDetails.value = data.details || "";
-        updateStatus.value = data.status || "planned";
-        updateDate.value = data.target_date || "";
-        updatePublished.checked = data.is_published === true;
+        if (updateId) updateId.value = data.id;
+        if (updateTitle) updateTitle.value = data.title || "";
+        if (updateDescription) updateDescription.value = data.description || "";
+        if (updateDetails) updateDetails.value = data.content || "";
+        if (updateStatus) updateStatus.value = data.update_status || "planned";
 
-        document.getElementById(
-            "updateFormTitle"
-        ).textContent = "Edit Update Plan";
+        // target_date is not a column in the current database.
+        if (updateDate) updateDate.value = "";
 
-        updateForm.classList.remove("hidden");
+        if (updatePublished) {
+            updatePublished.checked = data.status === "published";
+        }
 
-        updateForm.scrollIntoView({
+        const formTitle =
+            document.getElementById("updateFormTitle");
+
+        if (formTitle) {
+            formTitle.textContent = "Edit Update Plan";
+        }
+
+        updateForm?.classList.remove("hidden");
+
+        updateForm?.scrollIntoView({
             behavior: "smooth"
         });
 
+        return;
     }
 
     if (action === "delete-update") {
