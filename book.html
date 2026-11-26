@@ -6,44 +6,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description" content="Connect - Sign in to your account">
+
     <title>Connect | Login</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase.js" defer></script>
-<script src="./book.js" defer></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./book.css">
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Configuration -->
+    <script src="./supabase.js" defer></script>
+
+    <!-- Login JavaScript -->
+    <script src="./book.js" defer></script>
 </head>
 
 <body>
 
     <!-- HEADER -->
     <header class="brand-bar">
+
         <h1 class="brand">Connect</h1>
+
     </header>
 
-    <!-- MAIN LOGIN AREA -->
+
+    <!-- MAIN CONTENT -->
     <main class="page">
 
         <section class="login-container">
 
+            <!-- LOGIN HEADING -->
             <h2>Log in to Connect</h2>
 
+            <p class="subtitle">
+                Welcome back! Enter your account details to continue.
+            </p>
+
+
+            <!-- LOGIN FORM -->
             <form id="loginForm" class="login-form">
 
+                <!-- EMAIL OR PHONE -->
                 <div class="form-group">
+
                     <label for="email" class="sr-only">
-                        Email address or mobile number
+                        Email address
                     </label>
 
                     <input
                         type="text"
                         id="email"
                         name="email"
-                        placeholder="Email address or mobile number"
+                        placeholder="Email address"
                         autocomplete="username"
                         required
                     >
+
                 </div>
 
+
+                <!-- PASSWORD -->
                 <div class="form-group">
+
                     <label for="password" class="sr-only">
                         Password
                     </label>
@@ -56,44 +83,68 @@
                         autocomplete="current-password"
                         required
                     >
+
                 </div>
 
+
+                <!-- ERROR / STATUS MESSAGE -->
                 <p
                     id="errorMessage"
                     class="error-message"
+                    role="alert"
                     aria-live="polite">
                 </p>
 
+
+                <!-- LOGIN BUTTON -->
                 <button
                     type="submit"
+                    id="loginButton"
                     class="login-button">
+
                     Log in
+
                 </button>
 
             </form>
 
-            <a href="#" class="forgot-link">
+
+            <!-- FORGOT PASSWORD -->
+            <a href="#" class="forgot-link" id="forgotPassword">
+
                 Forgot password?
+
             </a>
 
+
+            <!-- DIVIDER -->
             <div class="separator"></div>
 
-            <a href="signup.html" class="create-account">
+
+            <!-- CREATE ACCOUNT -->
+            <a href="./signup.html" class="create-account">
+
                 Create new account
+
             </a>
 
+
+            <!-- COMMUNITY -->
             <p class="community-label">
+
                 Connect Community
+
             </p>
 
         </section>
 
     </main>
 
+
     <!-- FOOTER -->
     <footer>
 
-        <nav class="footer-links">
+        <nav class="footer-links" aria-label="Footer navigation">
 
             <a href="#">About</a>
             <a href="#">Privacy</a>
@@ -103,8 +154,10 @@
 
         </nav>
 
-        <p>
+        <p class="copyright">
+
             Connect © 2026. All rights reserved.
+
         </p>
 
     </footer>
