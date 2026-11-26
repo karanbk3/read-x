@@ -2,6 +2,7 @@
 /* ==========================================
    READ-X | PUBLICATION SYSTEM
    Search, Categories, Reading and Saving
+   Public Author Identity: Hidden
 ========================================== */
 
 
@@ -59,7 +60,13 @@ let readerSaveButton = null;
 const savingArticles = new Set();
 
 
-/* 4. DEFAULT CATEGORIES */
+/* 4. PUBLIC AUTHOR DISPLAY */
+
+const PUBLIC_AUTHOR_NAME = "Unknown Author";
+const PUBLIC_AUTHOR_INITIAL = "U";
+
+
+/* 5. DEFAULT CATEGORIES */
 
 const defaultCategories = [
     "All",
@@ -78,7 +85,7 @@ const defaultCategories = [
 ];
 
 
-/* 5. CHECK REQUIRED PAGE ELEMENTS */
+/* 6. CHECK REQUIRED PAGE ELEMENTS */
 
 function checkPageElements() {
 
@@ -124,7 +131,7 @@ function checkPageElements() {
 }
 
 
-/* 6. SHOW LOADING */
+/* 7. SHOW LOADING */
 
 function showLoading() {
 
@@ -143,7 +150,7 @@ function showLoading() {
 }
 
 
-/* 7. SHOW ERROR */
+/* 8. SHOW ERROR */
 
 function showError(message) {
 
@@ -166,7 +173,7 @@ function showError(message) {
 }
 
 
-/* 8. LOAD CURRENT USER */
+/* 9. LOAD CURRENT USER */
 
 async function loadCurrentUser() {
 
@@ -194,7 +201,7 @@ async function loadCurrentUser() {
 }
 
 
-/* 9. LOAD SAVED ARTICLE IDS */
+/* 10. LOAD SAVED ARTICLE IDS */
 
 async function loadSavedArticleIds() {
 
@@ -235,7 +242,7 @@ async function loadSavedArticleIds() {
 }
 
 
-/* 10. LOAD PUBLICATIONS */
+/* 11. LOAD PUBLICATIONS */
 
 async function loadPublications() {
 
@@ -254,10 +261,11 @@ async function loadPublications() {
     try {
 
         /*
-           Load publications FIRST.
+           PUBLIC DATA ONLY.
 
-           Saving problems should never stop
-           published articles from appearing.
+           author_name is intentionally excluded.
+           Public visitors do not need to receive
+           the original author identity.
         */
 
         const { data, error } = await db
@@ -265,7 +273,6 @@ async function loadPublications() {
             .select(`
                 id,
                 title,
-                author_name,
                 category,
                 description,
                 content,
@@ -281,11 +288,6 @@ async function loadPublications() {
         publications = data || [];
 
         loadingFailed = false;
-
-        /*
-           Load account and saved article information
-           separately after publications are loaded.
-        */
 
         await loadCurrentUser();
 
@@ -325,7 +327,7 @@ async function loadPublications() {
 }
 
 
-/* 11. CREATE CATEGORY BUTTONS */
+/* 12. CREATE CATEGORY BUTTONS */
 
 function createCategoryButtons() {
 
@@ -379,7 +381,7 @@ function createCategoryButtons() {
 }
 
 
-/* 12. UPDATE ACTIVE CATEGORY */
+/* 13. UPDATE ACTIVE CATEGORY */
 
 function updateCategoryButtons() {
 
@@ -397,7 +399,7 @@ function updateCategoryButtons() {
 }
 
 
-/* 13. SEARCH ARTICLES */
+/* 14. SEARCH ARTICLES */
 
 searchInput.addEventListener("input", () => {
 
@@ -410,7 +412,7 @@ searchInput.addEventListener("input", () => {
 });
 
 
-/* 14. CLEAR SEARCH */
+/* 15. CLEAR SEARCH */
 
 clearSearch.addEventListener("click", () => {
 
@@ -425,7 +427,7 @@ clearSearch.addEventListener("click", () => {
 });
 
 
-/* 15. FILTER PUBLICATIONS */
+/* 16. FILTER PUBLICATIONS */
 
 function getFilteredPublications() {
 
@@ -435,9 +437,13 @@ function getFilteredPublications() {
             selectedCategory === "All" ||
             article.category === selectedCategory;
 
+        /*
+           Do not include private author information
+           in public search.
+        */
+
         const searchableText = [
             article.title,
-            article.author_name,
             article.category,
             article.description,
             article.content
@@ -456,7 +462,7 @@ function getFilteredPublications() {
 }
 
 
-/* 16. DISPLAY PUBLICATIONS */
+/* 17. DISPLAY PUBLICATIONS */
 
 function displayPublications() {
 
@@ -497,7 +503,7 @@ function displayPublications() {
 }
 
 
-/* 17. IMAGE PLACEHOLDER */
+/* 18. IMAGE PLACEHOLDER */
 
 function createImagePlaceholder() {
 
@@ -512,7 +518,7 @@ function createImagePlaceholder() {
 }
 
 
-/* 18. UPDATE SAVE BUTTON */
+/* 19. UPDATE SAVE BUTTON */
 
 function updateSaveButton(button, article) {
 
@@ -538,7 +544,7 @@ function updateSaveButton(button, article) {
 }
 
 
-/* 19. UPDATE ALL BUTTONS FOR ONE ARTICLE */
+/* 20. UPDATE ALL BUTTONS FOR ONE ARTICLE */
 
 function updateArticleSaveButtons(article) {
 
@@ -559,7 +565,7 @@ function updateArticleSaveButtons(article) {
 }
 
 
-/* 20. CREATE SAVE BUTTON */
+/* 21. CREATE SAVE BUTTON */
 
 function createSaveButton(article, readerMode = false) {
 
@@ -590,7 +596,7 @@ function createSaveButton(article, readerMode = false) {
 }
 
 
-/* 21. SAVE OR UNSAVE ARTICLE */
+/* 22. SAVE OR UNSAVE ARTICLE */
 
 async function toggleSavedArticle(article) {
 
@@ -607,7 +613,7 @@ async function toggleSavedArticle(article) {
     }
 
     /*
-       Check the user's login status.
+       Check login status.
     */
 
     try {
@@ -620,9 +626,14 @@ async function toggleSavedArticle(article) {
 
     } catch (error) {
 
-        console.error("READ-X authentication error:", error);
+        console.error(
+            "READ-X authentication error:",
+            error
+        );
 
-        alert("Unable to check your account. Please try again.");
+        alert(
+            "Unable to check your account. Please try again."
+        );
 
         return;
 
@@ -631,7 +642,6 @@ async function toggleSavedArticle(article) {
 
     /*
        Login is required to save an article.
-       Return the user to the same article after login.
     */
 
     if (!currentUser) {
@@ -663,8 +673,7 @@ async function toggleSavedArticle(article) {
 
 
     /*
-       Prevent saving if the saved_articles
-       database table is unavailable.
+       Check saved_articles availability.
     */
 
     if (!saveSystemAvailable) {
@@ -700,7 +709,9 @@ async function toggleSavedArticle(article) {
 
             savedPublicationIds.delete(articleId);
 
-            console.log("READ-X: Article removed from saved articles.");
+            console.log(
+                "READ-X: Article removed from saved articles."
+            );
 
         }
 
@@ -721,7 +732,9 @@ async function toggleSavedArticle(article) {
 
             savedPublicationIds.add(articleId);
 
-            console.log("READ-X: Article saved successfully.");
+            console.log(
+                "READ-X: Article saved successfully."
+            );
 
         }
 
@@ -747,7 +760,7 @@ async function toggleSavedArticle(article) {
 }
 
 
-/* 22. CREATE PUBLICATION CARD */
+/* 23. CREATE PUBLICATION CARD */
 
 function createPublicationCard(article) {
 
@@ -757,7 +770,10 @@ function createPublicationCard(article) {
 
     card.setAttribute("tabindex", "0");
 
-    card.setAttribute("aria-label", "Read " + article.title);
+    card.setAttribute(
+        "aria-label",
+        "Read " + (article.title || "publication")
+    );
 
 
     /*
@@ -811,15 +827,21 @@ function createPublicationCard(article) {
 
     title.className = "publication-title";
 
-    title.textContent = article.title || "Untitled publication";
+    title.textContent =
+        article.title || "Untitled publication";
 
+
+    /*
+       PUBLIC AUTHOR IDENTITY
+
+       Original author name is never displayed.
+    */
 
     const author = document.createElement("p");
 
     author.className = "publication-author";
 
-    author.textContent =
-        "By " + (article.author_name || "READ-X Author");
+    author.textContent = "By " + PUBLIC_AUTHOR_NAME;
 
 
     const description = document.createElement("p");
@@ -882,7 +904,7 @@ function createPublicationCard(article) {
 }
 
 
-/* 23. CREATE READER SAVE BUTTON */
+/* 24. CREATE READER SAVE BUTTON */
 
 function createReaderSaveButton(article) {
 
@@ -910,7 +932,7 @@ function createReaderSaveButton(article) {
 }
 
 
-/* 24. OPEN FULL ARTICLE */
+/* 25. OPEN FULL ARTICLE */
 
 function openArticle(article) {
 
@@ -922,14 +944,15 @@ function openArticle(article) {
     readerTitle.textContent =
         article.title || "Untitled publication";
 
-    readerAuthor.textContent =
-        article.author_name || "READ-X Author";
 
-    authorAvatar.textContent =
-        (article.author_name || "R")
-            .trim()
-            .charAt(0)
-            .toUpperCase();
+    /*
+       HIDE ORIGINAL AUTHOR IDENTITY
+    */
+
+    readerAuthor.textContent = PUBLIC_AUTHOR_NAME;
+
+    authorAvatar.textContent = PUBLIC_AUTHOR_INITIAL;
+
 
     readerDescription.textContent =
         article.description || "";
@@ -1005,7 +1028,7 @@ function openArticle(article) {
 }
 
 
-/* 25. REOPEN ARTICLE FROM URL */
+/* 26. REOPEN ARTICLE FROM URL */
 
 function openArticleFromURL() {
 
@@ -1037,7 +1060,7 @@ function openArticleFromURL() {
 }
 
 
-/* 26. CLOSE ARTICLE READER */
+/* 27. CLOSE ARTICLE READER */
 
 function closeArticle() {
 
@@ -1051,8 +1074,9 @@ function closeArticle() {
 
     document.querySelector(".publications-section").hidden = false;
 
-
     currentArticle = null;
+
+    readerSaveButton = null;
 
 
     /*
@@ -1077,7 +1101,7 @@ function closeArticle() {
 backToArticles.addEventListener("click", closeArticle);
 
 
-/* 27. RESET FILTERS */
+/* 28. RESET FILTERS */
 
 resetFilters.addEventListener("click", () => {
 
@@ -1096,11 +1120,13 @@ resetFilters.addEventListener("click", () => {
 });
 
 
-/* 28. INITIALIZE READ-X */
+/* 29. INITIALIZE READ-X */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    console.log("READ-X: Starting publication system...");
+    console.log(
+        "READ-X: Starting publication system..."
+    );
 
     if (!checkPageElements()) {
 
