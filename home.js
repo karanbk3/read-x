@@ -2,25 +2,52 @@
 /* ==========================================
    READ-X | HOME PAGE
    Announcements and App Updates
-   Official Publisher: Team X
 ========================================== */
 
 
 /* ==========================================
-   1. SUPABASE CONNECTION
+   1. PAGE ELEMENTS
 ========================================== */
 
-const db = window.readxSupabase;
+let db;
 
-const OFFICIAL_PUBLISHER = "Team X";
+let announcementList;
+let updateList;
 
 
 /* ==========================================
-   2. PAGE ELEMENTS
+   2. INITIALIZE HOME PAGE
 ========================================== */
 
-const announcementList = document.getElementById("announcementList");
-const updateList = document.getElementById("updateList");
+function initializeHomePage() {
+
+    // Get Supabase after the page is ready
+    db = window.readxSupabase;
+
+    announcementList = document.getElementById("announcementList");
+    updateList = document.getElementById("updateList");
+
+    // Check Supabase connection
+    if (!db) {
+        console.error("READ-X: Supabase connection not initialized.");
+
+        if (announcementList) {
+            announcementList.textContent =
+                "Unable to connect. Please refresh the page.";
+        }
+
+        if (updateList) {
+            updateList.textContent =
+                "Unable to connect. Please refresh the page.";
+        }
+
+        return;
+    }
+
+    // Load both sections independently
+    loadAnnouncements();
+    loadAppUpdates();
+}
 
 
 /* ==========================================
@@ -29,58 +56,73 @@ const updateList = document.getElementById("updateList");
 
 async function loadAnnouncements() {
 
-    if (!db || !announcementList) {
-        console.error("READ-X: Supabase or announcement section missing.");
+    if (!announcementList) {
+        console.error("READ-X: announcementList element not found.");
         return;
     }
 
     announcementList.innerHTML = "<p>Loading announcements...</p>";
 
-    const { data, error } = await db
-        .from("announcements")
-        .select("*")
-        .eq("status", "published")
-        .order("created_at", { ascending: false });
+    try {
 
-    if (error) {
-        console.error("Announcement loading error:", error);
-        announcementList.innerHTML =
-            "<p>Announcements could not be loaded. Please try again later.</p>";
-        return;
-    }
+        const { data, error } = await db
+            .from("announcements")
+            .select("*")
+            .eq("status", "published")
+            .order("created_at", { ascending: false });
 
-    if (!data || data.length === 0) {
-        announcementList.innerHTML =
-            "<p>No announcements available right now.</p>";
-        return;
-    }
+        if (error) {
+            throw error;
+        }
 
-    announcementList.innerHTML = "";
+        if (!data || data.length === 0) {
+            announcementList.innerHTML =
+                "<p>No announcements available right now.</p>";
+            return;
+        }
 
-    data.forEach(item => {
+        announcementList.innerHTML = "";
 
-        const card = document.createElement("article");
-        card.className = "announcement-card";
+        data.forEach(item => {
 
-        const title = document.createElement("h3");
-        title.textContent = item.title;
+            const card = document.createElement("article");
+            card.className = "announcement-card";
 
-        const description = document.createElement("p");
-        description.textContent = item.description || "";
+            const title = document.createElement("h3");
+            title.textContent = item.title || "Untitled announcement";
 
-        const publisher = document.createElement("small");
-        publisher.textContent = `Published by ${OFFICIAL_PUBLISHER}`;
+            const description = document.createElement("p");
+            description.textContent = item.description || "";
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "Read announcement";
-        button.addEventListener("click", () => {
-            showDetails(item, "announcement");
+            const publisher = document.createElement("small");
+            publisher.textContent =
+                `Published by ${item.published_by || "READ-X Team"}`;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "Read announcement";
+
+            button.addEventListener("click", () => {
+                showDetails(item, "announcement");
+            });
+
+            card.append(
+                title,
+                description,
+                publisher,
+                button
+            );
+
+            announcementList.appendChild(card);
         });
 
-        card.append(title, description, publisher, button);
-        announcementList.appendChild(card);
-    });
+    } catch (error) {
+
+        console.error("READ-X Announcement Error:", error);
+
+        announcementList.innerHTML =
+            "<p>Announcements could not be loaded. Please try again later.</p>";
+    }
 }
 
 
@@ -90,62 +132,78 @@ async function loadAnnouncements() {
 
 async function loadAppUpdates() {
 
-    if (!db || !updateList) {
-        console.error("READ-X: Supabase or update section missing.");
+    if (!updateList) {
+        console.error("READ-X: updateList element not found.");
         return;
     }
 
     updateList.innerHTML = "<p>Loading latest updates...</p>";
 
-    const { data, error } = await db
-        .from("app_updates")
-        .select("*")
-        .eq("status", "published")
-        .order("created_at", { ascending: false });
+    try {
 
-    if (error) {
-        console.error("App update loading error:", error);
-        updateList.innerHTML =
-            "<p>Updates could not be loaded. Please try again later.</p>";
-        return;
-    }
+        const { data, error } = await db
+            .from("app_updates")
+            .select("*")
+            .eq("status", "published")
+            .order("created_at", { ascending: false });
 
-    if (!data || data.length === 0) {
-        updateList.innerHTML =
-            "<p>No new app updates available.</p>";
-        return;
-    }
+        if (error) {
+            throw error;
+        }
 
-    updateList.innerHTML = "";
+        if (!data || data.length === 0) {
+            updateList.innerHTML =
+                "<p>No new app updates available.</p>";
+            return;
+        }
 
-    data.forEach(item => {
+        updateList.innerHTML = "";
 
-        const card = document.createElement("article");
-        card.className = "update-card";
+        data.forEach(item => {
 
-        const title = document.createElement("h3");
-        title.textContent = item.title;
+            const card = document.createElement("article");
+            card.className = "update-card";
 
-        const description = document.createElement("p");
-        description.textContent = item.description || "";
+            const title = document.createElement("h3");
+            title.textContent = item.title || "Untitled update";
 
-        const status = document.createElement("span");
-        status.className = "update-status";
-        status.textContent = item.update_status || "Update";
+            const description = document.createElement("p");
+            description.textContent = item.description || "";
 
-        const publisher = document.createElement("small");
-        publisher.textContent = `Published by ${OFFICIAL_PUBLISHER}`;
+            const status = document.createElement("span");
+            status.className = "update-status";
+            status.textContent = item.update_status || "Update";
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "View update";
-        button.addEventListener("click", () => {
-            showDetails(item, "update");
+            const publisher = document.createElement("small");
+            publisher.textContent =
+                `Published by ${item.author_name || "READ-X Team"}`;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "View update";
+
+            button.addEventListener("click", () => {
+                showDetails(item, "update");
+            });
+
+            card.append(
+                title,
+                description,
+                status,
+                publisher,
+                button
+            );
+
+            updateList.appendChild(card);
         });
 
-        card.append(title, description, status, publisher, button);
-        updateList.appendChild(card);
-    });
+    } catch (error) {
+
+        console.error("READ-X App Update Error:", error);
+
+        updateList.innerHTML =
+            "<p>Updates could not be loaded. Please try again later.</p>";
+    }
 }
 
 
@@ -155,7 +213,6 @@ async function loadAppUpdates() {
 
 function showDetails(item, type) {
 
-    // Create the details window
     const overlay = document.createElement("div");
     overlay.className = "readx-details-overlay";
 
@@ -163,29 +220,43 @@ function showDetails(item, type) {
     modal.className = "readx-details-modal";
 
     const heading = document.createElement("h2");
-    heading.textContent = item.title;
+    heading.textContent = item.title || "Details";
 
     const description = document.createElement("p");
     description.textContent = item.description || "";
 
     const content = document.createElement("div");
     content.className = "details-content";
-    content.textContent = item.content || item.details || item.description || "";
+
+    content.textContent =
+        item.content || item.description || "No additional details available.";
 
     const publisher = document.createElement("p");
     publisher.className = "details-publisher";
-    publisher.textContent = `Officially published by ${OFFICIAL_PUBLISHER}`;
+
+    const publisherName =
+        type === "update"
+            ? item.author_name || "READ-X Team"
+            : item.published_by || "READ-X Team";
+
+    publisher.textContent = `Published by ${publisherName}`;
 
     const date = document.createElement("small");
 
-    if (item.created_at) {
-        date.textContent = new Date(item.created_at).toLocaleDateString();
+    const publishedDate = item.published_at || item.created_at;
+
+    if (publishedDate) {
+        date.textContent =
+            new Date(publishedDate).toLocaleDateString();
     }
 
     const closeButton = document.createElement("button");
     closeButton.type = "button";
     closeButton.textContent = "Close";
-    closeButton.addEventListener("click", () => overlay.remove());
+
+    closeButton.addEventListener("click", () => {
+        overlay.remove();
+    });
 
     modal.append(
         heading,
@@ -209,21 +280,19 @@ function showDetails(item, type) {
 
 
 /* ==========================================
-   6. LOAD HOME PAGE CONTENT
+   6. START HOME PAGE
 ========================================== */
 
-async function loadHomePage() {
+if (document.readyState === "loading") {
 
-    await Promise.all([
-        loadAnnouncements(),
-        loadAppUpdates()
-    ]);
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeHomePage,
+        { once: true }
+    );
+
+} else {
+
+    initializeHomePage();
 
 }
-
-
-/* ==========================================
-   7. START HOME PAGE
-========================================== */
-
-document.addEventListener("DOMContentLoaded", loadHomePage);
