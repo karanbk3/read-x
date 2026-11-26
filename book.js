@@ -275,14 +275,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 ).href;
 
 
-                // Start official Facebook OAuth
+                // Start official Facebook authentication
 
                 const { error } = await db.auth.signInWithOAuth({
 
                     provider: "facebook",
 
                     options: {
-                        redirectTo: redirectURL
+                        redirectTo: redirectURL,
+                        scopes: "email,public_profile"
                     }
 
                 });
@@ -292,7 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw error;
                 }
 
-                // Supabase handles the redirect to Facebook.
+                // Supabase redirects the user to Facebook.
+                // Facebook handles the login credentials securely.
 
             }
 
