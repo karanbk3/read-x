@@ -7,15 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f4f8ff">
 
+    <meta
+        name="description"
+        content="Explore ideas, knowledge, technology, education and community publications on READ-X.">
+
+    <meta name="robots" content="index, follow">
+
     <title>READ-X | Explore Publications</title>
 
+    <!-- Website Styling -->
     <link rel="stylesheet" href="./read.css">
 
-    <!-- Supabase connection -->
+    <!-- Supabase Connection -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase.js" defer></script>
 
-    <!-- Publication system -->
+    <!-- Publication System -->
     <script src="./read.js" defer></script>
 </head>
 
@@ -23,22 +30,32 @@
 
     <main class="read-container">
 
-        <!-- HEADER -->
+        <!-- =====================================
+             HEADER
+        ====================================== -->
 
         <header class="read-header">
+
             <a href="./home.html" class="read-logo">
                 READ<span>-X</span>
             </a>
+
             <p>Discover ideas. Explore knowledge.</p>
+
         </header>
 
 
-        <!-- SEARCH -->
+        <!-- =====================================
+             SEARCH
+        ====================================== -->
 
-        <section class="search-section">
+        <section
+            class="search-section"
+            aria-label="Search publications">
+
             <div class="search-box">
 
-                <span class="search-icon">⌕</span>
+                <span class="search-icon" aria-hidden="true">⌕</span>
 
                 <input
                     type="search"
@@ -56,21 +73,32 @@
                 </button>
 
             </div>
+
         </section>
 
 
-        <!-- CATEGORIES -->
+        <!-- =====================================
+             CATEGORIES
+        ====================================== -->
 
-        <section class="category-section">
+        <section
+            class="category-section"
+            aria-labelledby="categoryHeading">
 
             <div class="category-heading">
-                <h2>Explore Categories</h2>
+
+                <h2 id="categoryHeading">
+                    Explore Categories
+                </h2>
+
                 <span>Choose a topic</span>
+
             </div>
 
             <div
                 class="category-list"
-                id="categoryList">
+                id="categoryList"
+                aria-label="Publication categories">
 
                 <button
                     type="button"
@@ -84,18 +112,33 @@
         </section>
 
 
-        <!-- PUBLICATIONS -->
+        <!-- =====================================
+             PUBLICATIONS
+        ====================================== -->
 
-        <section class="publications-section">
+        <section
+            class="publications-section"
+            aria-labelledby="publicationHeading">
 
             <div class="publication-heading">
 
                 <div>
-                    <h1>Publications</h1>
-                    <p>Ideas and knowledge shared by our community.</p>
+
+                    <h1 id="publicationHeading">
+                        Publications
+                    </h1>
+
+                    <p>
+                        Ideas and knowledge shared by our community.
+                    </p>
+
                 </div>
 
-                <span id="publicationCount">Loading...</span>
+                <span
+                    id="publicationCount"
+                    aria-live="polite">
+                    Loading...
+                </span>
 
             </div>
 
@@ -105,6 +148,7 @@
             <div
                 id="connectionMessage"
                 class="connection-message"
+                role="alert"
                 hidden>
             </div>
 
@@ -113,11 +157,15 @@
 
             <div
                 class="publication-list"
-                id="publicationList">
+                id="publicationList"
+                aria-live="polite">
 
                 <div class="loading-state">
+
                     <div class="loader"></div>
+
                     <p>Loading publications...</p>
+
                 </div>
 
             </div>
@@ -130,9 +178,15 @@
                 id="emptyState"
                 hidden>
 
-                <div class="empty-icon">⌕</div>
+                <div
+                    class="empty-icon"
+                    aria-hidden="true">
+                    ⌕
+                </div>
 
-                <h3 id="emptyTitle">No publications found</h3>
+                <h3 id="emptyTitle">
+                    No publications found
+                </h3>
 
                 <p id="emptyDescription">
                     Try another search or choose a different category.
@@ -149,12 +203,17 @@
         </section>
 
 
-        <!-- FULL ARTICLE READER -->
+        <!-- =====================================
+             FULL ARTICLE READER
+        ====================================== -->
 
         <section
             class="article-reader"
             id="articleReader"
+            aria-label="Article reader"
             hidden>
+
+            <!-- READER TOPBAR -->
 
             <div class="reader-topbar">
 
@@ -165,35 +224,54 @@
                     ← Back to publications
                 </button>
 
-                <span class="reader-brand">READ-X</span>
+                <span class="reader-brand">
+                    READ-X
+                </span>
 
             </div>
 
 
+            <!-- ARTICLE CONTENT -->
+
             <article class="reader-content">
+
+                <!-- CATEGORY -->
 
                 <span
                     class="reader-category"
                     id="readerCategory">
-                    Article
+                    General
                 </span>
 
-                <h1 id="readerTitle"></h1>
+
+                <!-- TITLE -->
+
+                <h1 id="readerTitle">
+                    Article title
+                </h1>
 
 
-                <!-- AUTHOR -->
+                <!-- PUBLIC AUTHOR IDENTITY -->
 
                 <div class="reader-author">
 
                     <div
                         class="author-avatar"
-                        id="authorAvatar">
-                        R
+                        id="authorAvatar"
+                        aria-hidden="true">
+                        U
                     </div>
 
                     <div>
-                        <strong id="readerAuthor"></strong>
-                        <span>Publication author</span>
+
+                        <strong id="readerAuthor">
+                            Unknown Author
+                        </strong>
+
+                        <span>
+                            Author identity hidden
+                        </span>
+
                     </div>
 
                 </div>
@@ -205,6 +283,7 @@
                     id="readerImage"
                     class="reader-image"
                     alt="Article cover"
+                    loading="lazy"
                     hidden>
 
 
@@ -229,11 +308,13 @@
                 <div class="reader-footer">
 
                     <p>
-                        Published by
-                        <strong>READ-X Team X</strong>
+                        Published on
+                        <strong>READ-X</strong>
                     </p>
 
-                    <span>Read. Think. Share.</span>
+                    <span>
+                        Read. Think. Share.
+                    </span>
 
                 </div>
 
@@ -242,46 +323,97 @@
         </section>
 
 
-        <!-- PAGE FOOTER -->
+        <!-- =====================================
+             PAGE FOOTER
+        ====================================== -->
 
         <footer class="read-footer">
 
             <strong>READ-X</strong>
 
-            <p>Read. Think. Share.</p>
+            <p>
+                Read. Think. Share.
+            </p>
 
-            <a href="./home.html">Back to Home</a>
+            <a href="./home.html">
+                Back to Home
+            </a>
 
         </footer>
 
     </main>
 
 
-    <!-- FLOATING BOTTOM NAVIGATION -->
+    <!-- =====================================
+         FLOATING BOTTOM NAVIGATION
+    ====================================== -->
 
-    <nav class="floating-nav" aria-label="Main navigation">
+    <nav
+        class="floating-nav"
+        aria-label="Main navigation">
 
-        <a href="./home.html" class="nav-item">
-            <span class="nav-icon">⌂</span>
+        <a
+            href="./home.html"
+            class="nav-item">
+
+            <span
+                class="nav-icon"
+                aria-hidden="true">
+                ⌂
+            </span>
+
             <span>Home</span>
+
         </a>
 
-        <a href="./read.html" class="nav-item active">
-            <span class="nav-icon">▤</span>
+
+        <a
+            href="./read.html"
+            class="nav-item active"
+            aria-current="page">
+
+            <span
+                class="nav-icon"
+                aria-hidden="true">
+                ▤
+            </span>
+
             <span>Read</span>
+
         </a>
 
-        <a href="./share.html" class="nav-item">
-            <span class="nav-icon">＋</span>
+
+        <a
+            href="./share.html"
+            class="nav-item">
+
+            <span
+                class="nav-icon"
+                aria-hidden="true">
+                ＋
+            </span>
+
             <span>Share</span>
+
         </a>
 
-        <a href="./saved.html" class="nav-item">
-            <span class="nav-icon">♡</span>
+
+        <a
+            href="./saved.html"
+            class="nav-item">
+
+            <span
+                class="nav-icon"
+                aria-hidden="true">
+                ♡
+            </span>
+
             <span>Saved</span>
+
         </a>
 
     </nav>
 
 </body>
+
 </html>
