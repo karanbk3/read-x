@@ -1,18 +1,21 @@
 
 /* ==========================================
    READ-X | HOME PAGE
-   Modern Glassmorphism Design
+   Premium Glassmorphism Design
    Blue • Ice Blue • Lavender
 ========================================== */
 
 
-/* 1. ROOT VARIABLES */
+/* ==========================================
+   1. ROOT VARIABLES
+========================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
     --primary: #3478d4;
     --primary-dark: #225cae;
+    --primary-light: #e7f1ff;
 
     --background: #f4f8ff;
     --white: #ffffff;
@@ -20,14 +23,21 @@
     --text: #192b45;
     --muted: #718096;
 
-    --glass: rgba(255, 255, 255, 0.68);
-    --border: rgba(255, 255, 255, 0.85);
+    --glass: rgba(255, 255, 255, 0.76);
+    --border: rgba(255, 255, 255, 0.9);
 
     --shadow: 0 12px 35px rgba(49, 91, 150, 0.09);
+    --shadow-hover: 0 18px 45px rgba(49, 91, 150, 0.15);
+
+    --radius-large: 28px;
+    --radius-medium: 22px;
+    --radius-small: 14px;
 }
 
 
-/* 2. RESET */
+/* ==========================================
+   2. RESET
+========================================== */
 
 * {
     margin: 0;
@@ -57,8 +67,14 @@ a {
     text-decoration: none;
 }
 
+button {
+    font-family: inherit;
+}
 
-/* 3. HEADER */
+
+/* ==========================================
+   3. HEADER
+========================================== */
 
 .header {
     width: 100%;
@@ -69,10 +85,11 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 15px;
 }
 
 .logo {
-    font-size: 27px;
+    font-size: 28px;
     font-weight: 800;
     letter-spacing: -1.5px;
 }
@@ -81,34 +98,59 @@ a {
     color: var(--primary);
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-link,
 .login-link {
-    padding: 11px 23px;
-    border: 1px solid rgba(52, 120, 212, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 19px;
     border-radius: 30px;
 
-    background: var(--glass);
-    backdrop-filter: blur(15px);
-
-    color: var(--primary-dark);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
 
-    transition: 0.3s;
+    transition: 0.3s ease;
+}
+
+.admin-link {
+    color: var(--primary-dark);
+    background: rgba(52, 120, 212, 0.08);
+    border: 1px solid rgba(52, 120, 212, 0.2);
+}
+
+.admin-link:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.login-link {
+    color: white;
+    background: var(--primary);
+    box-shadow: 0 5px 15px rgba(52, 120, 212, 0.2);
 }
 
 .login-link:hover {
-    background: var(--primary);
-    color: white;
+    background: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 
-/* 4. MAIN */
+/* ==========================================
+   4. MAIN LAYOUT
+========================================== */
 
 main {
     width: 100%;
     max-width: 1150px;
     margin: auto;
-    padding: 15px 6% 130px;
+    padding: 15px 6% 140px;
 }
 
 .content-section {
@@ -116,30 +158,35 @@ main {
 }
 
 
-/* 5. WELCOME SECTION */
+/* ==========================================
+   5. WELCOME SECTION
+========================================== */
 
 .welcome-section {
     position: relative;
     overflow: hidden;
 
-    padding: 75px 45px;
+    padding: 78px 48px;
 
     border: 1px solid var(--border);
-    border-radius: 30px;
+    border-radius: 32px;
 
     background: linear-gradient(
         125deg,
-        rgba(255,255,255,0.9),
-        rgba(224,239,255,0.78),
-        rgba(238,232,255,0.8)
+        rgba(255, 255, 255, 0.95),
+        rgba(224, 239, 255, 0.85),
+        rgba(238, 232, 255, 0.88)
     );
 
     backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
     box-shadow: var(--shadow);
 }
 
 .welcome-section::after {
     content: "RX";
+
     position: absolute;
     right: 35px;
     bottom: -45px;
@@ -163,6 +210,9 @@ main {
 }
 
 .welcome-section h1 {
+    position: relative;
+    z-index: 1;
+
     max-width: 650px;
 
     font-size: clamp(42px, 7vw, 72px);
@@ -177,6 +227,9 @@ main {
 }
 
 .welcome-description {
+    position: relative;
+    z-index: 1;
+
     max-width: 480px;
     margin-top: 20px;
 
@@ -186,7 +239,9 @@ main {
 }
 
 
-/* 6. SECTION HEADINGS */
+/* ==========================================
+   6. SECTION HEADINGS
+========================================== */
 
 .section-heading {
     display: flex;
@@ -198,13 +253,13 @@ main {
 
 .section-heading h2,
 .content-section h2 {
-    font-size: 25px;
+    font-size: 26px;
     font-weight: 800;
     letter-spacing: -0.8px;
 }
 
 .live-indicator {
-    padding: 9px 14px;
+    padding: 9px 15px;
     border-radius: 30px;
 
     background: rgba(52, 120, 212, 0.09);
@@ -215,54 +270,57 @@ main {
 }
 
 
-/* 7. ANNOUNCEMENTS */
+/* ==========================================
+   7. ANNOUNCEMENTS
+========================================== */
 
 .announcement-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 20px;
 }
 
 .announcement-card {
-    padding: 26px;
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    min-width: 0;
+    padding: 28px;
 
     border: 1px solid var(--border);
-    border-radius: 23px;
+    border-radius: var(--radius-medium);
 
     background: var(--glass);
+
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     box-shadow: var(--shadow);
-    transition: transform 0.3s, box-shadow 0.3s;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .announcement-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 18px 40px rgba(49, 91, 150, 0.14);
-}
-
-.announcement-tag {
-    display: inline-block;
-    padding: 7px 13px;
-    margin-bottom: 17px;
-
-    border-radius: 20px;
-    background: #e7f1ff;
-
-    color: var(--primary-dark);
-    font-size: 10px;
-    font-weight: 800;
+    box-shadow: var(--shadow-hover);
 }
 
 .announcement-card h3 {
     margin-bottom: 12px;
-    font-size: 18px;
+
+    font-size: 19px;
+    line-height: 1.5;
+    font-weight: 800;
 }
 
 .announcement-card p {
     color: var(--muted);
     font-size: 13px;
-    line-height: 1.8;
+    line-height: 1.9;
 }
 
 .announcement-card small {
@@ -275,16 +333,21 @@ main {
 }
 
 
-/* 8. ABOUT SECTION */
+/* ==========================================
+   8. ABOUT SECTION
+========================================== */
 
 .about-section {
-    padding: 35px;
+    padding: 38px;
 
     border: 1px solid var(--border);
-    border-radius: 25px;
+    border-radius: 26px;
 
     background: var(--glass);
+
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
     box-shadow: var(--shadow);
 }
 
@@ -302,72 +365,330 @@ main {
 }
 
 
-/* 9. LATEST UPDATES */
+/* ==========================================
+   9. LATEST UPDATES
+   LONG FULL-WIDTH CARDS
+========================================== */
 
 .update-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    width: 100%;
     margin-top: 22px;
 }
 
 .update-card {
-    padding: 26px;
+    position: relative;
+    overflow: hidden;
+
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 32px 35px;
 
     border: 1px solid var(--border);
-    border-radius: 23px;
+    border-radius: var(--radius-large);
 
     background: var(--glass);
-    backdrop-filter: blur(20px);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
     box-shadow: var(--shadow);
 
-    transition: transform 0.3s;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.update-card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background: linear-gradient(
+        180deg,
+        var(--primary),
+        #a18bfa
+    );
+
+    border-radius: 10px 0 0 10px;
 }
 
 .update-card:hover {
     transform: translateY(-4px);
+
+    border-color: rgba(52, 120, 212, 0.25);
+
+    box-shadow: var(--shadow-hover);
 }
 
-.update-status {
-    display: inline-block;
-    padding: 7px 13px;
-    margin-bottom: 17px;
 
-    border-radius: 20px;
+/* UPDATE STATUS */
+
+.update-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 8px 15px;
+    margin-bottom: 19px;
+
+    border: 1px solid rgba(117, 97, 189, 0.12);
+    border-radius: 30px;
+
     background: #efebff;
 
     color: #7561bd;
+
     font-size: 10px;
     font-weight: 800;
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
 }
+
+
+/* UPDATE TITLE */
 
 .update-card h3 {
-    margin-bottom: 12px;
-    font-size: 17px;
+    width: 100%;
+    margin-bottom: 13px;
+
+    color: var(--text);
+
+    font-size: 23px;
+    line-height: 1.45;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
+
+/* UPDATE DESCRIPTION */
+
 .update-card p {
+    width: 100%;
+    max-width: 850px;
+
     color: var(--muted);
-    font-size: 13px;
+
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+
+/* UPDATE AUTHOR */
+
+.update-card small {
+    display: block;
+
+    width: 100%;
+    margin-top: 21px;
+    padding-top: 17px;
+
+    border-top: 1px solid rgba(52, 120, 212, 0.1);
+
+    color: var(--primary-dark);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   10. BUTTONS
+========================================== */
+
+.announcement-card button,
+.update-card button,
+.readx-details-modal button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 22px;
+    padding: 12px 21px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: var(--primary);
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 17px rgba(52, 120, 212, 0.2);
+
+    transition: 0.25s ease;
+}
+
+.announcement-card button:hover,
+.update-card button:hover,
+.readx-details-modal button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+
+    box-shadow: 0 9px 20px rgba(52, 120, 212, 0.27);
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(52, 120, 212, 0.45);
+    outline-offset: 4px;
+}
+
+
+/* ==========================================
+   11. DETAILS POPUP
+========================================== */
+
+.readx-details-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(17, 32, 56, 0.55);
+
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+
+    animation: fadeIn 0.25s ease;
+}
+
+.readx-details-modal {
+    width: 100%;
+    max-width: 700px;
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    padding: 38px;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+
+    background: #ffffff;
+
+    box-shadow: 0 25px 80px rgba(12, 35, 70, 0.22);
+
+    animation: modalIn 0.3s ease;
+}
+
+.readx-details-modal h2 {
+    margin-bottom: 17px;
+
+    color: var(--text);
+
+    font-size: 26px;
+    line-height: 1.4;
+}
+
+.readx-details-modal > p {
+    margin-bottom: 17px;
+
+    color: var(--muted);
+    font-size: 14px;
     line-height: 1.8;
 }
 
+.readx-details-modal .details-content {
+    margin-top: 23px;
+    padding: 22px;
 
-/* 10. EXPLORE SECTION */
+    border: 1px solid rgba(52, 120, 212, 0.1);
+    border-radius: 16px;
+
+    background: #f5f8ff;
+
+    color: #40516b;
+
+    font-size: 14px;
+    line-height: 2;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.readx-details-modal .details-publisher {
+    margin-top: 20px;
+
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.readx-details-modal small {
+    display: block;
+    margin-top: 12px;
+
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.readx-details-modal button {
+    margin-top: 25px;
+}
+
+
+/* ==========================================
+   12. EMPTY AND LOADING MESSAGES
+========================================== */
+
+.announcement-list > p,
+.update-list > p {
+    width: 100%;
+    padding: 25px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: var(--glass);
+
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+
+/* ==========================================
+   13. EXPLORE SECTION
+========================================== */
 
 .explore-section {
     margin-top: 65px;
-    padding: 45px 25px;
+    padding: 50px 25px;
 
     text-align: center;
 
     border: 1px solid var(--border);
-    border-radius: 26px;
+    border-radius: 28px;
 
     background: linear-gradient(
         120deg,
-        rgba(221,237,255,0.92),
-        rgba(240,235,255,0.92)
+        rgba(221, 237, 255, 0.92),
+        rgba(240, 235, 255, 0.92)
     );
 
     box-shadow: var(--shadow);
@@ -375,28 +696,35 @@ main {
 
 .explore-section h2 {
     margin-bottom: 12px;
-    font-size: 27px;
+    font-size: 28px;
+    font-weight: 800;
 }
 
 .explore-section p {
     margin-bottom: 25px;
+
     color: var(--muted);
     font-size: 13px;
 }
 
 .explore-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     padding: 14px 28px;
 
     border-radius: 30px;
-    background: var(--primary);
 
+    background: var(--primary);
     color: white;
+
     font-size: 13px;
     font-weight: 700;
 
     box-shadow: 0 8px 20px rgba(52, 120, 212, 0.22);
-    transition: 0.3s;
+
+    transition: 0.3s ease;
 }
 
 .explore-button:hover {
@@ -405,7 +733,9 @@ main {
 }
 
 
-/* 11. FLOATING BOTTOM NAVIGATION */
+/* ==========================================
+   14. FLOATING BOTTOM NAVIGATION
+========================================== */
 
 .bottom-nav {
     position: fixed;
@@ -413,6 +743,7 @@ main {
 
     left: 50%;
     bottom: 22px;
+
     transform: translateX(-50%);
 
     width: min(440px, calc(100% - 30px));
@@ -423,15 +754,15 @@ main {
 
     padding: 12px 10px;
 
-    border: 1px solid rgba(255,255,255,0.9);
+    border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 25px;
 
-    background: rgba(255,255,255,0.76);
+    background: rgba(255, 255, 255, 0.82);
 
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
 
-    box-shadow: 0 10px 40px rgba(43,83,140,0.18);
+    box-shadow: 0 10px 40px rgba(43, 83, 140, 0.18);
 }
 
 .nav-item {
@@ -443,10 +774,12 @@ main {
     gap: 5px;
 
     padding: 8px 12px;
+
     border-radius: 16px;
 
     color: #8997aa;
-    transition: 0.25s;
+
+    transition: 0.25s ease;
 }
 
 .nav-item span {
@@ -461,7 +794,7 @@ main {
 
 .nav-item:hover,
 .nav-item.active {
-    background: rgba(52,120,212,0.11);
+    background: rgba(52, 120, 212, 0.11);
     color: var(--primary);
 }
 
@@ -478,6 +811,7 @@ main {
     justify-content: center;
 
     border-radius: 12px;
+
     background: var(--primary);
     color: white;
 
@@ -485,7 +819,36 @@ main {
 }
 
 
-/* 12. TABLET RESPONSIVENESS */
+/* ==========================================
+   15. ANIMATIONS
+========================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ==========================================
+   16. TABLET RESPONSIVENESS
+========================================== */
 
 @media (max-width: 768px) {
 
@@ -494,12 +857,12 @@ main {
     }
 
     main {
-        padding: 12px 5% 120px;
+        padding: 12px 5% 125px;
     }
 
     .welcome-section {
-        padding: 55px 28px;
-        border-radius: 25px;
+        padding: 58px 30px;
+        border-radius: 26px;
     }
 
     .welcome-section h1 {
@@ -512,31 +875,58 @@ main {
     }
 
     .content-section {
-        margin-top: 48px;
+        margin-top: 50px;
     }
 
-    .announcement-list,
-    .update-list {
+    .announcement-list {
         grid-template-columns: 1fr;
     }
+
+    .update-card {
+        padding: 28px;
+    }
+
+    .update-card h3 {
+        font-size: 21px;
+    }
+
+    .about-section {
+        padding: 30px;
+    }
+
 }
 
 
-/* 13. MOBILE RESPONSIVENESS */
+/* ==========================================
+   17. MOBILE RESPONSIVENESS
+========================================== */
 
 @media (max-width: 480px) {
+
+    .header {
+        padding: 18px 5%;
+    }
 
     .logo {
         font-size: 24px;
     }
 
+    .header-actions {
+        gap: 7px;
+    }
+
+    .admin-link,
     .login-link {
-        padding: 9px 17px;
-        font-size: 11px;
+        padding: 9px 12px;
+        font-size: 10px;
+    }
+
+    main {
+        padding: 10px 5% 120px;
     }
 
     .welcome-section {
-        padding: 45px 22px;
+        padding: 46px 22px;
         border-radius: 22px;
     }
 
@@ -560,9 +950,34 @@ main {
         font-size: 21px;
     }
 
-    .announcement-card,
+    .live-indicator {
+        padding: 8px 10px;
+        font-size: 9px;
+    }
+
+    .announcement-card {
+        padding: 23px;
+    }
+
+    .announcement-card h3 {
+        font-size: 17px;
+    }
+
     .update-card {
-        padding: 21px;
+        padding: 24px 21px;
+        border-radius: 21px;
+    }
+
+    .update-card h3 {
+        font-size: 19px;
+    }
+
+    .update-card p {
+        font-size: 13px;
+    }
+
+    .update-status {
+        font-size: 9px;
     }
 
     .about-section {
@@ -570,7 +985,7 @@ main {
     }
 
     .explore-section {
-        padding: 35px 18px;
+        padding: 38px 18px;
     }
 
     .explore-section h2 {
@@ -595,58 +1010,41 @@ main {
     .nav-item small {
         font-size: 9px;
     }
+
+    .readx-details-overlay {
+        padding: 12px;
+    }
+
+    .readx-details-modal {
+        max-height: 88vh;
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+
+    .readx-details-modal h2 {
+        font-size: 21px;
+    }
+
+    .readx-details-modal .details-content {
+        padding: 17px;
+        font-size: 13px;
+    }
+
 }
 
 
-/* 14. ACCESSIBILITY */
-
-a:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: 4px;
-}
+/* ==========================================
+   18. ACCESSIBILITY
+========================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }
-}
 
-/* HEADER ACTIONS */
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.admin-link,
-.login-link {
-    text-decoration: none;
-    padding: 9px 17px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.admin-link {
-    color: #2563eb;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-}
-
-.admin-link:hover {
-    background: #dbeafe;
-}
-
-.login-link {
-    color: white;
-    background: #2563eb;
-}
-
-.login-link:hover {
-    background: #1d4ed8;
 }
