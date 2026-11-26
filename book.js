@@ -1,167 +1,153 @@
 
-document.addEventListener("DOMContentLoaded", () => {
+<!DOCTYPE html>
+<html lang="en">
 
-    // Supabase connection
-    const supabaseClient = window.readxSupabase;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect | Login</title>
+    <link rel="stylesheet" href="book.css">
 
-    // HTML elements
-    const loginForm = document.getElementById("loginForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const errorMessage = document.getElementById("errorMessage");
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase.js" defer></script>
+    <script src="./book.js" defer></script>
+</head>
 
-    // Check required elements
-    if (!loginForm || !emailInput || !passwordInput || !errorMessage) {
-        console.error("Required HTML elements are missing.");
-        return;
-    }
+<body>
 
-    // Check Supabase connection
-    if (!supabaseClient) {
-        showError("Unable to connect to the server. Please try again.");
-        console.error("Supabase connection not found.");
-        return;
-    }
+    <main class="page">
 
-    // Display error message
-    function showError(message) {
-        errorMessage.textContent = message;
-        errorMessage.style.display = "block";
-        errorMessage.style.color = "#d93025";
-    }
+        <!-- LEFT SIDE -->
+        <section class="left-panel">
 
-    // Display success message
-    function showSuccess(message) {
-        errorMessage.textContent = message;
-        errorMessage.style.display = "block";
-        errorMessage.style.color = "#188038";
-    }
+            <div class="brand">
+                <span class="brand-icon">C</span>
+                <span>Connect</span>
+            </div>
 
-    // Clear message
-    function clearMessage() {
-        errorMessage.textContent = "";
-        errorMessage.style.display = "none";
-    }
+            <div class="hero-content">
+                <div class="illustration">
+                    <div class="circle circle-one"></div>
+                    <div class="circle circle-two"></div>
 
-    // Validate email
-    function isValidEmail(value) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    }
+                    <div class="floating-card card-one">
+                        <span>✦</span>
+                        <div class="line"></div>
+                        <div class="line short"></div>
+                    </div>
 
-    // Validate international phone number
-    function isValidPhone(value) {
-        return /^\+[1-9]\d{7,14}$/.test(value);
-    }
+                    <div class="floating-card card-two">
+                        <div class="avatar">C</div>
+                        <div class="line"></div>
+                        <div class="line short"></div>
+                    </div>
 
-    // Login form
-    loginForm.addEventListener("submit", async (event) => {
+                    <div class="floating-icon">♥</div>
+                </div>
 
-        event.preventDefault();
+                <h1>
+                    Discover the
+                    <br>
+                    things that
+                    <br>
+                    <span>connect us.</span>
+                </h1>
 
-        clearMessage();
+                <p>
+                    Sign in to continue your journey and
+                    stay connected with your community.
+                </p>
+            </div>
 
-        // Get input values
-        const loginId = emailInput.value.trim();
-        const password = passwordInput.value;
+        </section>
 
-        // Check empty fields
-        if (!loginId && !password) {
-            showError("Please enter your email or mobile number and password.");
-            return;
-        }
 
-        if (!loginId) {
-            showError("Please enter your email address or mobile number.");
-            emailInput.focus();
-            return;
-        }
+        <!-- RIGHT SIDE -->
+        <section class="right-panel">
 
-        if (!password) {
-            showError("Please enter your password.");
-            passwordInput.focus();
-            return;
-        }
+            <div class="login-container">
 
-        // Check whether input is email or phone
-        const isEmail = isValidEmail(loginId);
-        const isPhone = isValidPhone(loginId);
+                <div class="mobile-brand">CONNECT</div>
 
-        if (!isEmail && !isPhone) {
-            showError(
-                "Enter a valid email or mobile number with country code, e.g. +9779812345678."
-            );
-            emailInput.focus();
-            return;
-        }
+                <h2>Welcome back</h2>
 
-        // Find login button
-        const loginButton = loginForm.querySelector(
-            'button[type="submit"]'
-        );
+                <p class="subtitle">
+                    Enter your details to continue.
+                </p>
 
-        if (!loginButton) {
-            showError("Login button not found.");
-            return;
-        }
+                <form id="loginForm">
 
-        // Loading state
-        const originalText = loginButton.textContent;
+                    <label for="email">Email or mobile number</label>
 
-        loginButton.disabled = true;
-        loginButton.textContent = "Logging in...";
+                    <input
+                        type="text"
+                        id="email"
+                        placeholder="Email address or mobile number"
+                        autocomplete="username"
+                        required
+                    >
 
-        try {
+                    <label for="password">Password</label>
 
-            // Prepare Supabase credentials
-            const credentials = isEmail
-                ? {
-                    email: loginId,
-                    password: password
-                }
-                : {
-                    phone: loginId,
-                    password: password
-                };
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
 
-            // Authenticate with Supabase
-            const { data, error } =
-                await supabaseClient.auth.signInWithPassword(credentials);
+                    <p
+                        id="errorMessage"
+                        class="message"
+                        aria-live="polite">
+                    </p>
 
-            // Handle login error
-            if (error) {
-                console.error("Supabase login error:", error.message);
+                    <a href="#" class="forgot-link">
+                        Forgot password?
+                    </a>
 
-                showError(
-                    "Incorrect email/mobile number or password. Please try again."
-                );
+                    <button type="submit" class="login-button">
+                        Log in
+                    </button>
 
-                return;
-            }
+                </form>
 
-            // Login successful
-            showSuccess("Login successful! Welcome.");
+                <div class="separator">
+                    <span>OR</span>
+                </div>
 
-            console.log("Authenticated user:", data.user.id);
+                <button
+                    type="button"
+                    class="create-button"
+                    onclick="window.location.href='signup.html'">
+                    Create new account
+                </button>
 
-            // Redirect to home page
-            setTimeout(() => {
-                window.location.href = "home.html";
-            }, 1200);
+                <p class="terms">
+                    By continuing, you agree to our
+                    <a href="#">Terms</a> and
+                    <a href="#">Privacy Policy</a>.
+                </p>
 
-        } catch (error) {
+            </div>
 
-            console.error("Login error:", error);
+        </section>
 
-            showError("Something went wrong. Please try again.");
+    </main>
 
-        } finally {
 
-            // Restore button
-            loginButton.disabled = false;
-            loginButton.textContent = originalText;
+    <footer>
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Help</a>
+            <a href="#">Contact</a>
+        </div>
 
-        }
+        <p>Connect © 2026. Learning project.</p>
+    </footer>
 
-    });
-
-});
+</body>
+</html>
