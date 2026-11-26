@@ -62,6 +62,10 @@
                     <span>▦</span> Overview
                 </button>
 
+                <button class="nav-item" data-section="accounts">
+                    <span>👥</span> Accounts
+                </button>
+
                 <button class="nav-item" data-section="announcements">
                     <span>📢</span> Announcements
                 </button>
@@ -115,12 +119,18 @@
                     <div>
                         <span class="welcome-tag">ADMINISTRATOR PANEL</span>
                         <h2>Welcome to READ-X Management</h2>
-                        <p>Manage announcements, update plans and monitor administrative activity.</p>
+                        <p>Manage accounts, announcements, update plans and monitor administrative activity.</p>
                     </div>
                     <div class="welcome-symbol">✦</div>
                 </div>
 
                 <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <p>Total Accounts</p>
+                        <h2 id="accountCount">0</h2>
+                    </div>
 
                     <div class="stat-card">
                         <div class="stat-icon">📢</div>
@@ -152,6 +162,12 @@
 
                     <div class="quick-actions">
 
+                        <button class="quick-action" data-section="accounts">
+                            <span>👥</span>
+                            <strong>Manage Accounts</strong>
+                            <small>View registered READ-X users</small>
+                        </button>
+
                         <button class="quick-action" data-section="announcements">
                             <span>📢</span>
                             <strong>Manage Announcements</strong>
@@ -174,6 +190,215 @@
                 </div>
 
             </section>
+
+
+            <!-- ACCOUNTS -->
+            <section id="accountsSection" class="content-section hidden">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Account Management</h2>
+                        <p>View and manage registered READ-X accounts.</p>
+                    </div>
+
+                    <button id="refreshAccountsBtn" class="primary-btn">
+                        ↻ Refresh Accounts
+                    </button>
+                </div>
+
+                <!-- ACCOUNT STATISTICS -->
+                <div class="stats-grid account-stats">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <p>Total Registered Users</p>
+                        <h2 id="totalUsersCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <p>Email Accounts</p>
+                        <h2 id="emailUsersCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📱</div>
+                        <p>Phone Accounts</p>
+                        <h2 id="phoneUsersCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🔵</div>
+                        <p>Facebook Accounts</p>
+                        <h2 id="facebookUsersCount">0</h2>
+                    </div>
+
+                </div>
+
+                <!-- SEARCH -->
+                <div class="dashboard-panel account-search-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Find an Account</h3>
+                            <p>Search using a user ID, email address or phone number.</p>
+                        </div>
+                    </div>
+
+                    <div class="account-search-controls">
+
+                        <input
+                            type="search"
+                            id="accountSearch"
+                            placeholder="Search accounts..."
+                            autocomplete="off"
+                        >
+
+                        <select id="accountProviderFilter">
+                            <option value="all">All Providers</option>
+                            <option value="email">Email</option>
+                            <option value="phone">Phone</option>
+                            <option value="facebook">Facebook</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- ACCOUNTS TABLE -->
+                <div class="dashboard-panel accounts-table-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Registered Accounts</h3>
+                            <p>Account information retrieved from Supabase.</p>
+                        </div>
+
+                        <span id="accountResultsCount">0 accounts</span>
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table class="accounts-table">
+
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Provider</th>
+                                    <th>Registered</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="accountsTableBody">
+
+                                <tr>
+                                    <td colspan="6" class="empty-table">
+                                        Accounts will appear here after connecting Supabase.
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div id="accountsEmptyState" class="empty-state hidden">
+                        <div>👥</div>
+                        <h3>No Accounts Found</h3>
+                        <p>There are no matching accounts to display.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ACCOUNT DETAILS MODAL -->
+            <div id="accountDetailsModal" class="modal-overlay hidden">
+
+                <div class="modal-card account-modal">
+
+                    <div class="modal-header">
+                        <div>
+                            <span class="welcome-tag">ACCOUNT INFORMATION</span>
+                            <h2>Account Details</h2>
+                        </div>
+
+                        <button
+                            type="button"
+                            id="closeAccountModal"
+                            class="modal-close"
+                            aria-label="Close"
+                        >×</button>
+                    </div>
+
+                    <div class="account-details-content">
+
+                        <div class="account-detail-item">
+                            <span>User ID</span>
+                            <div>
+                                <strong id="detailUserId">—</strong>
+                                <button class="copy-account-btn" data-copy="detailUserId">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="account-detail-item">
+                            <span>Email Address</span>
+                            <div>
+                                <strong id="detailEmail">—</strong>
+                                <button class="copy-account-btn" data-copy="detailEmail">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="account-detail-item">
+                            <span>Phone Number</span>
+                            <div>
+                                <strong id="detailPhone">—</strong>
+                                <button class="copy-account-btn" data-copy="detailPhone">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="account-detail-item">
+                            <span>Login Provider</span>
+                            <strong id="detailProvider">—</strong>
+                        </div>
+
+                        <div class="account-detail-item">
+                            <span>Account Created</span>
+                            <strong id="detailCreatedAt">—</strong>
+                        </div>
+
+                        <div class="account-detail-item">
+                            <span>Last Sign In</span>
+                            <strong id="detailLastSignIn">—</strong>
+                        </div>
+
+                        <div class="account-detail-item">
+                            <span>Account Status</span>
+                            <strong id="detailStatus">—</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="closeAccountDetailsBtn" class="secondary-btn">
+                            Close
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
 
 
             <!-- ANNOUNCEMENTS -->
