@@ -1,153 +1,325 @@
 
-<!DOCTYPE html>
-<html lang="en">
+/* ==========================================
+   CONNECT | LOGIN SYSTEM
+   Supabase Authentication
+========================================== */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect | Login</title>
-    <link rel="stylesheet" href="book.css">
+document.addEventListener("DOMContentLoaded", () => {
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./supabase.js" defer></script>
-    <script src="./book.js" defer></script>
-</head>
+    // 1. SUPABASE CONNECTION
 
-<body>
-
-    <main class="page">
-
-        <!-- LEFT SIDE -->
-        <section class="left-panel">
-
-            <div class="brand">
-                <span class="brand-icon">C</span>
-                <span>Connect</span>
-            </div>
-
-            <div class="hero-content">
-                <div class="illustration">
-                    <div class="circle circle-one"></div>
-                    <div class="circle circle-two"></div>
-
-                    <div class="floating-card card-one">
-                        <span>✦</span>
-                        <div class="line"></div>
-                        <div class="line short"></div>
-                    </div>
-
-                    <div class="floating-card card-two">
-                        <div class="avatar">C</div>
-                        <div class="line"></div>
-                        <div class="line short"></div>
-                    </div>
-
-                    <div class="floating-icon">♥</div>
-                </div>
-
-                <h1>
-                    Discover the
-                    <br>
-                    things that
-                    <br>
-                    <span>connect us.</span>
-                </h1>
-
-                <p>
-                    Sign in to continue your journey and
-                    stay connected with your community.
-                </p>
-            </div>
-
-        </section>
+    const db = window.readxSupabase;
 
 
-        <!-- RIGHT SIDE -->
-        <section class="right-panel">
+    // 2. HTML ELEMENTS
 
-            <div class="login-container">
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const errorMessage = document.getElementById("errorMessage");
 
-                <div class="mobile-brand">CONNECT</div>
-
-                <h2>Welcome back</h2>
-
-                <p class="subtitle">
-                    Enter your details to continue.
-                </p>
-
-                <form id="loginForm">
-
-                    <label for="email">Email or mobile number</label>
-
-                    <input
-                        type="text"
-                        id="email"
-                        placeholder="Email address or mobile number"
-                        autocomplete="username"
-                        required
-                    >
-
-                    <label for="password">Password</label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
-                    >
-
-                    <p
-                        id="errorMessage"
-                        class="message"
-                        aria-live="polite">
-                    </p>
-
-                    <a href="#" class="forgot-link">
-                        Forgot password?
-                    </a>
-
-                    <button type="submit" class="login-button">
-                        Log in
-                    </button>
-
-                </form>
-
-                <div class="separator">
-                    <span>OR</span>
-                </div>
-
-                <button
-                    type="button"
-                    class="create-button"
-                    onclick="window.location.href='signup.html'">
-                    Create new account
-                </button>
-
-                <p class="terms">
-                    By continuing, you agree to our
-                    <a href="#">Terms</a> and
-                    <a href="#">Privacy Policy</a>.
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
+    const forgotPasswordLink = document.querySelector(".forgot-link");
+    const loginButton = loginForm?.querySelector('button[type="submit"]');
 
 
-    <footer>
-        <div class="footer-links">
-            <a href="#">About</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Help</a>
-            <a href="#">Contact</a>
-        </div>
+    // 3. CHECK HTML ELEMENTS
 
-        <p>Connect © 2026. Learning project.</p>
-    </footer>
+    if (!loginForm || !emailInput || !passwordInput ||
+        !errorMessage || !loginButton) {
 
-</body>
-</html>
+        console.error("Some required HTML elements are missing.");
+        return;
+
+    }
+
+
+    // 4. CHECK SUPABASE
+
+    if (!db) {
+
+        showMessage(
+            "Unable to connect to the server. Please check your connection.",
+            "error"
+        );
+
+        loginButton.disabled = true;
+
+        console.error("Supabase connection not found.");
+
+        return;
+
+    }
+
+
+    // 5. SHOW MESSAGE
+
+    function showMessage(message, type = "error") {
+
+        errorMessage.textContent = message;
+        errorMessage.style.display = "block";
+
+        if (type === "success") {
+
+            errorMessage.style.background = "#eaf8ef";
+            errorMessage.style.border = "1px solid #b7e4c7";
+            errorMessage.style.color = "#188038";
+
+        } else {
+
+            errorMessage.style.background = "#fff0f0";
+            errorMessage.style.border = "1px solid #ffd1d1";
+            errorMessage.style.color = "#d93025";
+
+        }
+
+    }
+
+
+    // 6. CLEAR MESSAGE
+
+    function clearMessage() {
+
+        errorMessage.textContent = "";
+        errorMessage.style.display = "none";
+
+    }
+
+
+    // 7. VALIDATE EMAIL
+
+    function isValidEmail(value) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    }
+
+
+    // 8. VALIDATE PHONE NUMBER
+
+    function isValidPhone(value) {
+
+        // International format, for example:
+        // +9779812345678
+
+        return /^\+[1-9]\d{7,14}$/.test(value);
+
+    }
+
+
+    // 9. BUTTON LOADING
+
+    function setLoading(loading) {
+
+        loginButton.disabled = loading;
+
+        loginButton.textContent = loading
+            ? "Logging in..."
+            : "Log in";
+
+    }
+
+
+    // 10. LOGIN SYSTEM
+
+    loginForm.addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        clearMessage();
+
+        const loginId = emailInput.value.trim();
+        const userPassword = passwordInput.value;
+
+        // Check empty fields
+
+        if (!loginId && !userPassword) {
+
+            showMessage("Please enter your email or mobile number and password.");
+            emailInput.focus();
+
+            return;
+
+        }
+
+        if (!loginId) {
+
+            showMessage("Please enter your email or mobile number.");
+            emailInput.focus();
+
+            return;
+
+        }
+
+        if (!userPassword) {
+
+            showMessage("Please enter your password.");
+            passwordInput.focus();
+
+            return;
+
+        }
+
+
+        // Identify email or phone
+
+        const isEmail = isValidEmail(loginId);
+        const isPhone = isValidPhone(loginId);
+
+        if (!isEmail && !isPhone) {
+
+            showMessage(
+                "Enter a valid email address or international phone number, such as +9779812345678."
+            );
+
+            emailInput.focus();
+
+            return;
+
+        }
+
+
+        // Prepare Supabase credentials
+
+        const credentials = isEmail
+            ? {
+                email: loginId,
+                password: userPassword
+            }
+            : {
+                phone: loginId,
+                password: userPassword
+            };
+
+
+        // Start login
+
+        setLoading(true);
+
+        try {
+
+            const { data, error } =
+                await db.auth.signInWithPassword(credentials);
+
+            if (error) {
+
+                console.error("Login error:", error.message);
+
+                showMessage(
+                    "Incorrect login details. Please check your email or phone number and password."
+                );
+
+                return;
+
+            }
+
+
+            // Successful login
+
+            showMessage(
+                "Login successful! Welcome.",
+                "success"
+            );
+
+            console.log("Authenticated user ID:", data.user.id);
+
+            console.log("Login successful.");
+
+            // The user remains on this page.
+            // You can add a redirect later.
+
+        }
+
+        catch (error) {
+
+            console.error("Unexpected login error:", error);
+
+            showMessage(
+                "Something went wrong. Please try again."
+            );
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    });
+
+
+    // 11. FORGOT PASSWORD
+
+    if (forgotPasswordLink) {
+
+        forgotPasswordLink.addEventListener("click", async (event) => {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const userEmail = emailInput.value.trim();
+
+            if (!userEmail || !isValidEmail(userEmail)) {
+
+                showMessage(
+                    "Enter your registered email address to receive a password reset link."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
+
+            try {
+
+                forgotPasswordLink.style.pointerEvents = "none";
+
+                const redirectURL = new URL(
+                    "./book.html",
+                    window.location.href
+                ).href;
+
+                const { error } = await db.auth.resetPasswordForEmail(
+                    userEmail,
+                    {
+                        redirectTo: redirectURL
+                    }
+                );
+
+                if (error) throw error;
+
+                showMessage(
+                    "If an account exists for this email, a password reset link will be sent.",
+                    "success"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error("Password reset error:", error);
+
+                showMessage(
+                    "Unable to send the reset link. Please try again."
+                );
+
+            }
+
+            finally {
+
+                forgotPasswordLink.style.pointerEvents = "";
+
+            }
+
+        });
+
+    }
+
+
+    // 12. INITIALIZATION
+
+    console.log("Connect authentication system initialized.");
+
+});
