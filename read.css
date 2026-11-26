@@ -1,21 +1,16 @@
 
 /* ==========================================
-   READ-X | PREMIUM READING EXPERIENCE
-   Clean • Modern • Responsive
+   READ-X | PREMIUM PUBLICATION EXPERIENCE
+   Clean • Modern • Anonymous • Responsive
 ========================================== */
 
 
-/* 1. GLOBAL DESIGN */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* 1. DESIGN SYSTEM */
 
 :root {
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
+    --primary-light: #60a5fa;
     --primary-soft: #eff6ff;
 
     --heading: #14264e;
@@ -24,26 +19,40 @@
 
     --border: #e5eaf2;
     --surface: #ffffff;
-    --background: #f6f8fc;
+    --background: #f5f8fd;
+
+    --success: #159b69;
+    --danger: #dc4c4c;
 
     --shadow:
         0 8px 30px rgba(15, 35, 75, 0.055);
 
     --shadow-hover:
-        0 16px 40px rgba(37, 99, 235, 0.11);
+        0 18px 45px rgba(37, 99, 235, 0.12);
 
     --radius: 22px;
 }
 
+
+/* 2. GLOBAL RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 25px;
 }
 
 body {
     min-height: 100vh;
-    padding: 38px 24px 125px;
+    padding: 38px 24px 130px;
 
     font-family: "Segoe UI", Arial, sans-serif;
+
     color: var(--text);
 
     background:
@@ -58,6 +67,8 @@ body {
             transparent 32%
         ),
         var(--background);
+
+    -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -71,7 +82,12 @@ button {
 
 a {
     color: inherit;
+    text-decoration: none;
     -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    max-width: 100%;
 }
 
 [hidden] {
@@ -85,7 +101,7 @@ a {
 }
 
 
-/* 2. HEADER */
+/* 3. HEADER */
 
 .read-header {
     margin-bottom: 38px;
@@ -95,11 +111,16 @@ a {
     display: inline-block;
 
     color: var(--heading);
-    text-decoration: none;
 
     font-size: 36px;
     font-weight: 950;
     letter-spacing: -1.8px;
+
+    transition: 0.2s ease;
+}
+
+.read-logo:hover {
+    transform: translateY(-2px);
 }
 
 .read-logo span {
@@ -110,12 +131,12 @@ a {
     margin-top: 7px;
 
     color: var(--muted);
-    font-size: 15px;
+    font-size: 14px;
     letter-spacing: 0.1px;
 }
 
 
-/* 3. SEARCH SECTION */
+/* 4. SEARCH */
 
 .search-section {
     margin-bottom: 38px;
@@ -165,7 +186,7 @@ a {
     background: transparent;
 
     color: var(--heading);
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .search-box input::placeholder {
@@ -173,8 +194,8 @@ a {
 }
 
 #clearSearch {
-    width: 33px;
-    height: 33px;
+    width: 34px;
+    height: 34px;
 
     display: flex;
     align-items: center;
@@ -188,7 +209,7 @@ a {
 
     font-size: 21px;
 
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
 #clearSearch:hover {
@@ -197,7 +218,7 @@ a {
 }
 
 
-/* 4. CATEGORY SECTION */
+/* 5. CATEGORIES */
 
 .category-section {
     margin-bottom: 48px;
@@ -228,7 +249,7 @@ a {
 .category-list {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
 
     overflow-x: auto;
 
@@ -250,7 +271,7 @@ a {
 .category-button {
     flex: 0 0 auto;
 
-    padding: 12px 23px;
+    padding: 12px 22px;
 
     background: var(--surface);
     color: #52627a;
@@ -258,7 +279,7 @@ a {
     border: 1px solid #e0e7f1;
     border-radius: 30px;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 750;
 
     transition: 0.22s ease;
@@ -268,6 +289,8 @@ a {
     color: var(--primary);
     border-color: #a9c7ff;
     background: #f8fbff;
+
+    transform: translateY(-1px);
 }
 
 .category-button.active {
@@ -280,7 +303,7 @@ a {
 }
 
 
-/* 5. PUBLICATION HEADING */
+/* 6. PUBLICATION HEADING */
 
 .publication-heading {
     display: flex;
@@ -303,7 +326,7 @@ a {
     margin-top: 7px;
 
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
@@ -317,12 +340,12 @@ a {
 
     border-radius: 30px;
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
 }
 
 
-/* 6. CONNECTION MESSAGE */
+/* 7. CONNECTION MESSAGE */
 
 .connection-message {
     margin-bottom: 20px;
@@ -339,16 +362,16 @@ a {
 }
 
 
-/* 7. PUBLICATION LIST */
+/* 8. PUBLICATION LIST */
 
 .publication-list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 20px;
 }
 
 
-/* 8. ARTICLE CARD */
+/* 9. PUBLICATION CARD */
 
 .publication-card {
     width: 100%;
@@ -356,14 +379,14 @@ a {
 
     display: flex;
     align-items: stretch;
-    gap: 25px;
+    gap: 23px;
 
-    padding: 19px;
+    padding: 16px;
 
     background: var(--surface);
 
     border: 1px solid var(--border);
-    border-radius: 27px;
+    border-radius: 25px;
 
     box-shadow: var(--shadow);
 
@@ -389,15 +412,15 @@ a {
 }
 
 
-/* ARTICLE IMAGE */
+/* PUBLICATION IMAGE */
 
 .publication-image,
 .publication-image-placeholder {
-    width: 255px;
-    min-height: 205px;
-    flex: 0 0 255px;
+    width: 220px;
+    min-height: 215px;
+    flex: 0 0 220px;
 
-    border-radius: 19px;
+    border-radius: 17px;
 }
 
 .publication-image {
@@ -420,12 +443,12 @@ a {
 
     color: var(--primary);
 
-    font-size: 24px;
-    font-weight: 900;
+    font-size: 23px;
+    font-weight: 950;
 }
 
 
-/* ARTICLE INFORMATION */
+/* PUBLICATION INFORMATION */
 
 .publication-info {
     flex: 1;
@@ -442,21 +465,21 @@ a {
     display: inline-block;
 
     padding: 7px 12px;
-    margin-bottom: 13px;
+    margin-bottom: 12px;
 
     background: var(--primary-soft);
     color: var(--primary);
 
     border-radius: 20px;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
 }
 
 .publication-title {
     color: var(--heading);
 
-    font-size: 22px;
+    font-size: 21px;
     line-height: 1.4;
     font-weight: 850;
 
@@ -468,16 +491,16 @@ a {
 .publication-author {
     color: var(--primary);
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 750;
 
-    margin-bottom: 12px;
+    margin-bottom: 11px;
 }
 
 .publication-description {
     color: var(--muted);
 
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.75;
 
     display: -webkit-box;
@@ -490,16 +513,16 @@ a {
 
 .read-article-hint {
     margin-top: auto;
-    padding-top: 15px;
+    padding-top: 14px;
 
     color: var(--primary);
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
 }
 
 
-/* 9. SAVE BUTTONS */
+/* 10. SAVE BUTTONS */
 
 .publication-save-button,
 .reader-save-button {
@@ -508,15 +531,15 @@ a {
     justify-content: center;
     gap: 7px;
 
-    padding: 11px 17px;
+    padding: 10px 15px;
 
     border: 1px solid #d8e6ff;
-    border-radius: 13px;
+    border-radius: 12px;
 
     background: #f0f6ff;
     color: var(--primary);
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
 
     cursor: pointer;
@@ -537,8 +560,14 @@ a {
     color: white;
 }
 
+.publication-save-button:disabled,
+.reader-save-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
 
-/* 10. LOADING STATE */
+
+/* 11. LOADING STATE */
 
 .loading-state {
     min-height: 230px;
@@ -550,7 +579,7 @@ a {
     gap: 16px;
 
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .loader {
@@ -572,28 +601,28 @@ a {
 }
 
 
-/* 11. EMPTY STATE */
+/* 12. EMPTY STATE */
 
 .empty-state {
-    padding: 65px 22px;
+    padding: 60px 22px;
 
     text-align: center;
 
     background: var(--surface);
 
     border: 1px dashed #cbd5e1;
-    border-radius: 25px;
+    border-radius: 24px;
 }
 
 .empty-icon {
     color: var(--primary);
-    font-size: 48px;
+    font-size: 45px;
     margin-bottom: 14px;
 }
 
 .empty-state h3 {
     color: var(--heading);
-    font-size: 20px;
+    font-size: 19px;
 }
 
 .empty-state p {
@@ -601,7 +630,7 @@ a {
     margin: 11px auto 22px;
 
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
@@ -614,7 +643,7 @@ a {
     border: none;
     border-radius: 12px;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 750;
 
     transition: 0.2s;
@@ -622,10 +651,11 @@ a {
 
 .empty-state button:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 
-/* 12. ARTICLE READER */
+/* 13. ARTICLE READER */
 
 .article-reader {
     padding: 25px;
@@ -636,6 +666,20 @@ a {
     border-radius: 26px;
 
     box-shadow: var(--shadow);
+
+    animation: reader-appear 0.25s ease;
+}
+
+@keyframes reader-appear {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .reader-topbar {
@@ -658,12 +702,15 @@ a {
 
     border: none;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
+
+    transition: 0.2s;
 }
 
 .reader-back:hover {
     color: var(--primary-dark);
+    transform: translateX(-3px);
 }
 
 .reader-brand {
@@ -681,6 +728,9 @@ a {
     margin: 42px auto;
 }
 
+
+/* READER CATEGORY */
+
 .reader-category {
     display: inline-block;
 
@@ -692,9 +742,12 @@ a {
 
     border-radius: 20px;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
 }
+
+
+/* READER TITLE */
 
 .reader-content h1 {
     color: var(--heading);
@@ -704,10 +757,12 @@ a {
     letter-spacing: -1px;
 
     margin-bottom: 25px;
+
+    overflow-wrap: anywhere;
 }
 
 
-/* AUTHOR INFORMATION */
+/* 14. ANONYMOUS AUTHOR */
 
 .reader-author {
     display: flex;
@@ -729,9 +784,10 @@ a {
     background: #eaf2ff;
     color: var(--primary);
 
+    border: 1px solid #dbeafe;
     border-radius: 50%;
 
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 850;
 }
 
@@ -742,18 +798,18 @@ a {
 
 .reader-author strong {
     color: var(--heading);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .reader-author span {
     margin-top: 4px;
 
     color: var(--muted);
-    font-size: 12px;
+    font-size: 11px;
 }
 
 
-/* READER IMAGE */
+/* 15. READER IMAGE */
 
 .reader-image {
     display: block;
@@ -769,12 +825,12 @@ a {
 }
 
 
-/* READER DESCRIPTION */
+/* 16. ARTICLE DESCRIPTION */
 
 .reader-description {
     color: #475569;
 
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 1.9;
 
@@ -782,13 +838,13 @@ a {
 }
 
 
-/* FULL ARTICLE TEXT */
+/* 17. FULL ARTICLE TEXT */
 
 .reader-article-text {
     color: #334155;
 
-    font-size: 16px;
-    line-height: 2.05;
+    font-size: 15px;
+    line-height: 2;
 
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -802,7 +858,7 @@ a {
 }
 
 
-/* READER FOOTER */
+/* 18. READER FOOTER */
 
 .reader-footer {
     margin-top: 42px;
@@ -811,7 +867,7 @@ a {
     border-top: 1px solid var(--border);
 
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.7;
 }
 
@@ -824,7 +880,7 @@ a {
 }
 
 
-/* 13. PAGE FOOTER */
+/* 19. PAGE FOOTER */
 
 .read-footer {
     margin-top: 38px;
@@ -835,7 +891,7 @@ a {
 
 .read-footer strong {
     color: var(--heading);
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 900;
 }
 
@@ -843,7 +899,7 @@ a {
     margin-top: 7px;
 
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .read-footer a {
@@ -852,10 +908,11 @@ a {
     margin-top: 12px;
 
     color: var(--primary);
-    text-decoration: none;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 750;
+
+    transition: 0.2s;
 }
 
 .read-footer a:hover {
@@ -863,7 +920,7 @@ a {
 }
 
 
-/* 14. FLOATING NAVIGATION */
+/* 20. FLOATING BOTTOM NAVIGATION */
 
 .floating-nav {
     position: fixed;
@@ -883,13 +940,13 @@ a {
 
     padding: 10px;
 
-    background: rgba(255, 255, 255, 0.94);
+    background: rgba(255, 255, 255, 0.95);
 
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 
     border: 1px solid rgba(220, 230, 245, 0.95);
-    border-radius: 25px;
+    border-radius: 24px;
 
     box-shadow:
         0 12px 38px rgba(15, 35, 75, 0.13);
@@ -907,19 +964,18 @@ a {
 
     padding: 9px 4px;
 
-    border-radius: 17px;
+    border-radius: 16px;
 
     color: #718096;
-    text-decoration: none;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 750;
 
     transition: 0.2s ease;
 }
 
 .nav-icon {
-    font-size: 22px;
+    font-size: 21px;
     line-height: 1;
 }
 
@@ -934,7 +990,7 @@ a {
 }
 
 
-/* 15. TABLET RESPONSIVENESS */
+/* 21. TABLET */
 
 @media (max-width: 800px) {
 
@@ -943,15 +999,15 @@ a {
     }
 
     .publication-card {
-        gap: 18px;
+        gap: 17px;
         min-height: 210px;
     }
 
     .publication-image,
     .publication-image-placeholder {
-        width: 205px;
-        flex-basis: 205px;
-        min-height: 190px;
+        width: 185px;
+        flex-basis: 185px;
+        min-height: 185px;
     }
 
     .publication-title {
@@ -961,7 +1017,7 @@ a {
 }
 
 
-/* 16. MOBILE RESPONSIVENESS */
+/* 22. MOBILE */
 
 @media (max-width: 600px) {
 
@@ -992,7 +1048,7 @@ a {
     }
 
     .search-box input {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .category-section {
@@ -1004,8 +1060,8 @@ a {
     }
 
     .category-button {
-        padding: 10px 18px;
-        font-size: 12px;
+        padding: 10px 17px;
+        font-size: 11px;
     }
 
     .publication-heading {
@@ -1018,7 +1074,7 @@ a {
     }
 
     .publication-heading p {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     #publicationCount {
@@ -1027,24 +1083,24 @@ a {
     }
 
     .publication-list {
-        gap: 17px;
+        gap: 16px;
     }
 
     .publication-card {
         min-height: 175px;
-        gap: 13px;
-        padding: 11px;
+        gap: 12px;
+        padding: 10px;
 
-        border-radius: 21px;
+        border-radius: 19px;
     }
 
     .publication-image,
     .publication-image-placeholder {
-        width: 125px;
-        flex-basis: 125px;
+        width: 120px;
+        flex-basis: 120px;
         min-height: 150px;
 
-        border-radius: 14px;
+        border-radius: 13px;
     }
 
     .publication-info {
@@ -1058,8 +1114,8 @@ a {
     }
 
     .publication-title {
-        font-size: 16px;
-        line-height: 1.35;
+        font-size: 15px;
+        line-height: 1.4;
         margin-bottom: 7px;
     }
 
@@ -1069,21 +1125,21 @@ a {
     }
 
     .publication-description {
-        font-size: 11px;
-        line-height: 1.55;
+        font-size: 10px;
+        line-height: 1.6;
 
         -webkit-line-clamp: 3;
         line-clamp: 3;
     }
 
     .publication-save-button {
-        padding: 8px 11px;
-        font-size: 10px;
+        padding: 8px 10px;
+        font-size: 9px;
     }
 
     .read-article-hint {
         padding-top: 9px;
-        font-size: 10px;
+        font-size: 9px;
     }
 
     .read-footer {
@@ -1109,7 +1165,7 @@ a {
     }
 
     .reader-description {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .reader-article-text {
@@ -1124,7 +1180,7 @@ a {
 }
 
 
-/* 17. SMALL PHONES */
+/* 23. SMALL PHONES */
 
 @media (max-width: 380px) {
 
@@ -1134,27 +1190,27 @@ a {
     }
 
     .publication-card {
-        gap: 10px;
+        gap: 9px;
         padding: 9px;
     }
 
     .publication-image,
     .publication-image-placeholder {
-        width: 105px;
-        flex-basis: 105px;
-        min-height: 135px;
+        width: 100px;
+        flex-basis: 100px;
+        min-height: 130px;
     }
 
     .publication-title {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .publication-description {
-        font-size: 10px;
+        font-size: 9px;
     }
 
     .read-article-hint {
-        font-size: 9px;
+        font-size: 8px;
     }
 
     .publication-heading h1 {
@@ -1171,13 +1227,13 @@ a {
     }
 
     .nav-icon {
-        font-size: 20px;
+        font-size: 19px;
     }
 
 }
 
 
-/* 18. ACCESSIBILITY */
+/* 24. ACCESSIBILITY */
 
 button:focus-visible,
 a:focus-visible,
@@ -1185,6 +1241,9 @@ input:focus-visible {
     outline: 3px solid rgba(37, 99, 235, 0.35);
     outline-offset: 3px;
 }
+
+
+/* 25. REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
 
