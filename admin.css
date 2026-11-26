@@ -1,29 +1,58 @@
 
 /* ==========================================
    READ-X | ADMIN DASHBOARD
-   Responsive Design
+   Modern Responsive Admin Interface
+   Accounts | Announcements | Updates | Activity
+========================================== */
+
+
+/* ==========================================
+   1. DESIGN VARIABLES
 ========================================== */
 
 :root {
     --primary: #635bff;
     --primary-dark: #5148e5;
+    --primary-soft: #eeedff;
+
     --navy: #10172a;
     --navy-light: #1b2540;
+
     --background: #f5f7fc;
     --surface: #ffffff;
+    --surface-soft: #fafbff;
+
     --text: #182033;
     --muted: #7d879b;
     --border: #e8ebf2;
+
     --success: #159b69;
+    --success-soft: #e6f7ef;
+
     --danger: #dc4c4c;
+    --danger-soft: #fff0f0;
+
     --warning: #d99422;
+    --warning-soft: #fff4df;
+
     --radius: 16px;
+    --shadow: 0 8px 28px rgba(20, 30, 60, 0.045);
+    --shadow-hover: 0 15px 35px rgba(20, 30, 60, 0.09);
 }
+
+
+/* ==========================================
+   2. RESET
+========================================== */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -44,6 +73,11 @@ button {
     cursor: pointer;
 }
 
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -53,7 +87,10 @@ a {
     display: none !important;
 }
 
-/* LOADING SCREEN */
+
+/* ==========================================
+   3. LOADING SCREEN
+========================================== */
 
 .loading-screen {
     min-height: 100vh;
@@ -66,8 +103,8 @@ a {
 }
 
 .loader {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border: 4px solid #e4e5ff;
     border-top-color: var(--primary);
     border-radius: 50%;
@@ -80,7 +117,10 @@ a {
     }
 }
 
-/* ACCESS DENIED */
+
+/* ==========================================
+   4. ACCESS DENIED
+========================================== */
 
 .access-denied {
     min-height: 100vh;
@@ -97,11 +137,11 @@ a {
     border: 1px solid var(--border);
     border-radius: 24px;
     text-align: center;
-    box-shadow: 0 15px 50px rgba(20, 30, 60, 0.08);
+    box-shadow: var(--shadow);
 }
 
 .denied-icon {
-    font-size: 42px;
+    font-size: 45px;
     margin-bottom: 18px;
 }
 
@@ -116,27 +156,40 @@ a {
     margin-bottom: 25px;
 }
 
-/* MAIN LAYOUT */
+
+/* ==========================================
+   5. MAIN LAYOUT
+========================================== */
 
 .admin-layout {
     min-height: 100vh;
     display: flex;
 }
 
-/* SIDEBAR */
+
+/* ==========================================
+   6. SIDEBAR
+========================================== */
 
 .sidebar {
     width: 260px;
     min-width: 260px;
     min-height: 100vh;
+
     background: var(--navy);
     color: white;
+
     padding: 28px 18px;
+
     display: flex;
     flex-direction: column;
+
     position: sticky;
     top: 0;
     height: 100vh;
+
+    overflow-y: auto;
+    z-index: 20;
 }
 
 .brand {
@@ -149,12 +202,17 @@ a {
 .brand-icon {
     width: 43px;
     height: 43px;
+
     border-radius: 13px;
+
     display: grid;
     place-items: center;
+
     background: linear-gradient(135deg, #7770ff, #5148e5);
+
     font-size: 23px;
     font-weight: 800;
+    box-shadow: 0 6px 18px rgba(99, 91, 255, 0.25);
 }
 
 .brand h2 {
@@ -181,19 +239,26 @@ a {
 
 .nav-item {
     width: 100%;
+
     padding: 14px 13px;
+
     display: flex;
     align-items: center;
     gap: 12px;
+
     border: none;
     border-radius: 11px;
+
     background: transparent;
     color: #b9c2d6;
+
     text-align: left;
     font-size: 13px;
     font-weight: 600;
+
     margin-bottom: 7px;
-    transition: 0.2s;
+
+    transition: 0.25s ease;
 }
 
 .nav-item span {
@@ -207,12 +272,18 @@ a {
     color: white;
 }
 
+.nav-item:hover {
+    transform: translateX(3px);
+}
+
 .nav-item.active {
     box-shadow: inset 3px 0 #827bff;
 }
 
 .sidebar-bottom {
     margin-top: auto;
+    padding-top: 25px;
+
     display: grid;
     gap: 9px;
 }
@@ -222,13 +293,18 @@ a {
     display: flex;
     align-items: center;
     gap: 11px;
+
     padding: 14px 13px;
+
     border-radius: 11px;
     color: #c2cbe0;
+
     background: transparent;
     border: 1px solid #303b56;
+
     font-size: 13px;
     font-weight: 600;
+
     transition: 0.2s;
 }
 
@@ -245,9 +321,13 @@ a {
 
 .logout-btn:hover {
     background: rgba(220, 76, 76, 0.13);
+    border-color: rgba(220, 76, 76, 0.3);
 }
 
-/* MAIN CONTENT */
+
+/* ==========================================
+   7. MAIN CONTENT
+========================================== */
 
 .main-content {
     min-width: 0;
@@ -274,25 +354,33 @@ a {
 .topbar h1 {
     font-size: 25px;
     font-weight: 800;
+    letter-spacing: -0.6px;
 }
 
 .admin-profile {
     display: flex;
     align-items: center;
     gap: 11px;
+
     padding: 10px 14px;
+
     background: white;
     border: 1px solid var(--border);
     border-radius: 14px;
+
+    box-shadow: var(--shadow);
 }
 
 .admin-avatar {
     width: 39px;
     height: 39px;
+
     display: grid;
     place-items: center;
-    background: #eeedff;
+
+    background: var(--primary-soft);
     color: var(--primary);
+
     border-radius: 12px;
     font-weight: 800;
 }
@@ -309,18 +397,27 @@ a {
     margin-top: 4px;
 }
 
-/* WELCOME BANNER */
+
+/* ==========================================
+   8. WELCOME BANNER
+========================================== */
 
 .welcome-banner {
     background: linear-gradient(120deg, #292b73, #635bff);
+
     color: white;
     border-radius: 20px;
+
     padding: 34px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     overflow: hidden;
     margin-bottom: 25px;
+
+    box-shadow: 0 12px 30px rgba(99, 91, 255, 0.15);
 }
 
 .welcome-tag {
@@ -348,7 +445,10 @@ a {
     padding: 0 25px;
 }
 
-/* STATISTICS */
+
+/* ==========================================
+   9. STATISTICS
+========================================== */
 
 .stats-grid {
     display: grid;
@@ -360,8 +460,18 @@ a {
 .stat-card {
     background: white;
     padding: 23px;
+
     border: 1px solid var(--border);
     border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    transition: 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
 }
 
 .stat-icon {
@@ -378,16 +488,23 @@ a {
 .stat-card h2 {
     font-size: 30px;
     margin-top: 8px;
+    letter-spacing: -1px;
 }
 
-/* DASHBOARD PANELS */
+
+/* ==========================================
+   10. DASHBOARD PANELS
+========================================== */
 
 .dashboard-panel,
 .form-panel {
     background: white;
     padding: 25px;
+
     border: 1px solid var(--border);
     border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
 }
 
 .panel-heading {
@@ -412,12 +529,17 @@ a {
 
 .quick-action {
     min-width: 0;
+
     padding: 19px;
+
     text-align: left;
+
     border: 1px solid var(--border);
     background: #fbfcff;
+
     border-radius: 13px;
-    transition: 0.2s;
+
+    transition: 0.25s ease;
 }
 
 .quick-action:hover {
@@ -444,7 +566,10 @@ a {
     line-height: 1.6;
 }
 
-/* SECTION HEADINGS */
+
+/* ==========================================
+   11. SECTION HEADINGS
+========================================== */
 
 .content-section {
     animation: appear 0.25s ease;
@@ -472,6 +597,7 @@ a {
 
 .section-heading h2 {
     font-size: 21px;
+    letter-spacing: -0.4px;
 }
 
 .section-heading p {
@@ -480,7 +606,10 @@ a {
     margin-top: 7px;
 }
 
-/* BUTTONS */
+
+/* ==========================================
+   12. BUTTONS
+========================================== */
 
 .primary-btn,
 .secondary-btn,
@@ -489,17 +618,22 @@ a {
     justify-content: center;
     align-items: center;
     gap: 7px;
+
     border: none;
     border-radius: 10px;
+
     padding: 12px 17px;
+
     font-size: 12px;
     font-weight: 700;
-    transition: 0.2s;
+
+    transition: 0.2s ease;
 }
 
 .primary-btn {
     background: var(--primary);
     color: white;
+    box-shadow: 0 5px 13px rgba(99, 91, 255, 0.15);
 }
 
 .primary-btn:hover {
@@ -517,7 +651,7 @@ a {
 }
 
 .danger-btn {
-    background: #fff0f0;
+    background: var(--danger-soft);
     color: var(--danger);
 }
 
@@ -525,7 +659,10 @@ a {
     background: #ffe0e0;
 }
 
-/* FORMS */
+
+/* ==========================================
+   13. FORMS
+========================================== */
 
 .form-panel {
     margin-bottom: 24px;
@@ -552,12 +689,16 @@ a {
 .form-panel select {
     width: 100%;
     padding: 13px 14px;
+
     border: 1px solid var(--border);
     border-radius: 10px;
+
     outline: none;
     color: var(--text);
+
     background: #fbfcff;
     font-size: 12px;
+
     transition: 0.2s;
 }
 
@@ -591,7 +732,10 @@ a {
     margin-top: 22px;
 }
 
-/* DATA LIST */
+
+/* ==========================================
+   14. DATA LIST
+========================================== */
 
 .data-list {
     display: grid;
@@ -600,13 +744,22 @@ a {
 
 .data-card {
     padding: 21px;
+
     background: white;
     border: 1px solid var(--border);
     border-radius: 14px;
+
     display: flex;
     justify-content: space-between;
     gap: 20px;
     align-items: flex-start;
+
+    transition: 0.2s ease;
+}
+
+.data-card:hover {
+    border-color: #d9d6ff;
+    box-shadow: var(--shadow);
 }
 
 .data-card-main {
@@ -647,41 +800,54 @@ a {
     font-size: 10px;
 }
 
+
+/* ==========================================
+   15. STATUS LABELS
+========================================== */
+
 .status {
     display: inline-block;
+
     padding: 6px 9px;
+
     border-radius: 20px;
+
     font-size: 10px;
     font-weight: 700;
+
     background: #f0f1f7;
     color: #626b80;
+
     margin-bottom: 11px;
 }
 
 .status.published,
 .status.completed {
-    background: #e6f7ef;
+    background: var(--success-soft);
     color: var(--success);
 }
 
 .status.in_progress {
-    background: #fff4df;
+    background: var(--warning-soft);
     color: var(--warning);
 }
 
 .status.draft,
 .status.planned {
-    background: #eeedff;
+    background: var(--primary-soft);
     color: var(--primary);
 }
 
 .status.cancelled,
 .status.archived {
-    background: #fff0f0;
+    background: var(--danger-soft);
     color: var(--danger);
 }
 
-/* ACTIVITY */
+
+/* ==========================================
+   16. ACTIVITY
+========================================== */
 
 .activity-card {
     display: flex;
@@ -693,10 +859,13 @@ a {
     width: 39px;
     height: 39px;
     min-width: 39px;
+
     display: grid;
     place-items: center;
-    background: #eeedff;
+
+    background: var(--primary-soft);
     border-radius: 12px;
+
     font-size: 17px;
 }
 
@@ -704,11 +873,15 @@ a {
     flex: 1;
 }
 
-/* EMPTY STATE */
+
+/* ==========================================
+   17. EMPTY STATE
+========================================== */
 
 .empty-state {
     text-align: center;
     padding: 45px 20px;
+
     background: white;
     border: 1px dashed #d9deea;
     border-radius: 14px;
@@ -730,26 +903,525 @@ a {
     color: var(--muted);
 }
 
-/* NOTIFICATIONS */
+
+/* ==========================================
+   18. ACCOUNTS MANAGEMENT
+========================================== */
+
+.accounts-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.account-stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: 0.2s ease;
+}
+
+.account-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.account-stat-icon {
+    width: 39px;
+    height: 39px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--primary-soft);
+    font-size: 19px;
+    margin-bottom: 14px;
+}
+
+.account-stat-card p {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.account-stat-card h3 {
+    font-size: 26px;
+    margin-top: 7px;
+    letter-spacing: -0.7px;
+}
+
+
+/* ACCOUNT TOOLBAR */
+
+.accounts-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    padding: 17px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+}
+
+.accounts-search {
+    flex: 1;
+    min-width: 180px;
+    position: relative;
+}
+
+.accounts-search input,
+#accountSearch {
+    width: 100%;
+    min-height: 44px;
+
+    padding: 12px 15px 12px 40px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: #fbfcff;
+    color: var(--text);
+
+    outline: none;
+    font-size: 12px;
+
+    transition: 0.2s;
+}
+
+.accounts-search input:focus,
+#accountSearch:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.08);
+}
+
+.accounts-search::before {
+    content: "⌕";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 20px;
+    pointer-events: none;
+}
+
+#accountProviderFilter {
+    min-height: 44px;
+    min-width: 155px;
+
+    padding: 10px 13px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    outline: none;
+    background: #fbfcff;
+
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#accountProviderFilter:focus {
+    border-color: var(--primary);
+}
+
+
+/* ACCOUNT RESULTS */
+
+.account-results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    padding: 0 3px;
+    margin-bottom: 13px;
+
+    color: var(--muted);
+    font-size: 11px;
+}
+
+#accountResultsCount {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+
+/* ACCOUNT TABLE */
+
+.accounts-table-container {
+    width: 100%;
+    overflow-x: auto;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    box-shadow: var(--shadow);
+}
+
+.accounts-table,
+#accountsTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+}
+
+.accounts-table thead,
+#accountsTable thead {
+    background: #f8f9fd;
+}
+
+.accounts-table th,
+#accountsTable th {
+    padding: 16px 17px;
+
+    text-align: left;
+    white-space: nowrap;
+
+    color: #7d879b;
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.accounts-table td,
+#accountsTable td {
+    padding: 16px 17px;
+
+    border-bottom: 1px solid #f0f1f6;
+
+    color: var(--text);
+    font-size: 11px;
+
+    vertical-align: middle;
+}
+
+.accounts-table tbody tr,
+#accountsTable tbody tr {
+    transition: background 0.2s;
+}
+
+.accounts-table tbody tr:hover,
+#accountsTable tbody tr:hover {
+    background: #fafaff;
+}
+
+.accounts-table tbody tr:last-child td,
+#accountsTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.accounts-table td strong,
+#accountsTable td strong {
+    display: block;
+    max-width: 170px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    font-size: 10px;
+    font-weight: 600;
+    color: #657087;
+}
+
+
+/* ACCOUNT PROVIDER BADGES */
+
+#accountsTableBody .status {
+    margin: 0;
+    text-transform: capitalize;
+}
+
+#accountsTableBody .status.email {
+    background: #eeedff;
+    color: var(--primary);
+}
+
+#accountsTableBody .status.phone {
+    background: #e6f7ef;
+    color: var(--success);
+}
+
+#accountsTableBody .status.facebook {
+    background: #eaf2ff;
+    color: #3478d4;
+}
+
+
+/* ACCOUNT ACTION BUTTON */
+
+#accountsTableBody button {
+    white-space: nowrap;
+    padding: 9px 12px;
+    font-size: 10px;
+}
+
+
+/* ACCOUNT EMPTY TABLE */
+
+.empty-table {
+    text-align: center;
+    padding: 35px 15px !important;
+    color: var(--muted) !important;
+}
+
+
+/* ACCOUNT EMPTY STATE */
+
+#accountsEmptyState {
+    margin-top: 15px;
+}
+
+
+/* ==========================================
+   19. ACCOUNT DETAILS MODAL
+========================================== */
+
+.account-modal,
+#accountDetailsModal {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(13, 20, 39, 0.65);
+    backdrop-filter: blur(6px);
+
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.account-modal-content {
+    width: 100%;
+    max-width: 570px;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background: white;
+    border-radius: 20px;
+
+    padding: 27px;
+
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.22);
+
+    animation: modalAppear 0.25s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.account-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+}
+
+.account-modal-header h2 {
+    font-size: 20px;
+}
+
+.account-modal-header p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+#closeAccountModal,
+#closeAccountDetailsBtn {
+    border: none;
+    background: #f1f2f7;
+    color: #596176;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 10px;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 19px;
+    transition: 0.2s;
+}
+
+#closeAccountModal:hover,
+#closeAccountDetailsBtn:hover {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+
+/* ACCOUNT DETAILS GRID */
+
+.account-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.account-detail-item {
+    min-width: 0;
+    padding: 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: #fbfcff;
+}
+
+.account-detail-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.account-detail-item label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 9px;
+}
+
+.account-detail-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 9px;
+}
+
+.account-detail-value strong {
+    min-width: 0;
+    font-size: 11px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.copy-account-btn {
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 7px;
+
+    padding: 7px 9px;
+
+    background: var(--primary-soft);
+    color: var(--primary);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.copy-account-btn:hover {
+    background: #dedcff;
+}
+
+
+/* ACCOUNT MODAL FOOTER */
+
+.account-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding-top: 22px;
+    margin-top: 22px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* ==========================================
+   20. NOTIFICATIONS
+========================================== */
 
 .admin-message {
     position: fixed;
     right: 25px;
     bottom: 25px;
+
     max-width: min(380px, calc(100% - 40px));
+
     padding: 15px 19px;
+
     border-radius: 12px;
+
     background: var(--navy);
     color: white;
+
     font-size: 12px;
     line-height: 1.6;
+
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-    z-index: 100;
+
+    z-index: 2000;
 }
 
-/* RESPONSIVE DESIGN */
+
+/* ==========================================
+   21. SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f2f7;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c9cce0;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a9acc5;
+}
+
+
+/* ==========================================
+   22. RESPONSIVE: TABLETS
+========================================== */
 
 @media (max-width: 1050px) {
+
     .sidebar {
         width: 225px;
         min-width: 225px;
@@ -762,9 +1434,20 @@ a {
     .quick-actions {
         grid-template-columns: 1fr;
     }
+
+    .accounts-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
 }
 
+
+/* ==========================================
+   23. RESPONSIVE: MOBILE
+========================================== */
+
 @media (max-width: 760px) {
+
     .admin-layout {
         display: block;
     }
@@ -774,16 +1457,14 @@ a {
         min-width: 0;
         min-height: auto;
         height: auto;
+
         position: relative;
+
         padding: 17px;
     }
 
     .brand {
         padding: 0 5px 16px;
-    }
-
-    .sidebar-section {
-        overflow-x: auto;
     }
 
     .sidebar-label {
@@ -793,12 +1474,21 @@ a {
     .sidebar-section {
         display: flex;
         gap: 7px;
+
+        overflow-x: auto;
         padding-bottom: 7px;
+
+        scrollbar-width: none;
+    }
+
+    .sidebar-section::-webkit-scrollbar {
+        display: none;
     }
 
     .nav-item {
         width: auto;
         min-width: max-content;
+
         margin: 0;
         padding: 11px 13px;
     }
@@ -810,6 +1500,7 @@ a {
     .sidebar-bottom {
         display: flex;
         margin-top: 12px;
+        padding-top: 0;
         gap: 8px;
     }
 
@@ -817,6 +1508,7 @@ a {
     .logout-btn {
         flex: 1;
         justify-content: center;
+
         padding: 11px 8px;
         font-size: 11px;
     }
@@ -888,11 +1580,66 @@ a {
     .form-panel {
         padding: 19px;
     }
+
+    .accounts-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .accounts-search {
+        width: 100%;
+    }
+
+    #accountProviderFilter {
+        width: 100%;
+    }
+
+    .account-results-info {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .account-modal-content {
+        padding: 21px;
+    }
+
 }
 
-@media (max-width: 390px) {
-    .sidebar-bottom {
-        flex-direction: column;
+
+/* ==========================================
+   24. RESPONSIVE: SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .accounts-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .account-stat-card {
+        padding: 15px;
+    }
+
+    .account-stat-card h3 {
+        font-size: 22px;
+    }
+
+    .account-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .account-detail-item.full-width {
+        grid-column: auto;
+    }
+
+    .account-modal {
+        padding: 10px;
+    }
+
+    .account-modal-content {
+        border-radius: 15px;
+        padding: 18px;
     }
 
     .form-actions {
@@ -902,4 +1649,40 @@ a {
     .form-actions button {
         width: 100%;
     }
+
+    .sidebar-bottom {
+        flex-direction: column;
+    }
+
+    .admin-message {
+        right: 12px;
+        bottom: 12px;
+    }
+
+}
+
+
+/* ==========================================
+   25. ACCESSIBILITY
+========================================== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(99, 91, 255, 0.35);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+
 }
