@@ -1,7 +1,7 @@
 
 /* ==========================================
    CONNECT | LOGIN SYSTEM
-   Supabase Authentication
+   Supabase Email, Phone & Facebook OAuth
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,19 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorMessage = document.getElementById("errorMessage");
 
     const forgotPasswordLink = document.querySelector(".forgot-link");
-    const loginButton = loginForm?.querySelector('button[type="submit"]');
+
+    const loginButton =
+        loginForm?.querySelector('button[type="submit"]');
+
+    const facebookLoginBtn =
+        document.getElementById("facebookLoginBtn");
 
 
-    // 3. CHECK REQUIRED HTML ELEMENTS
+    // 3. CHECK REQUIRED ELEMENTS
 
-    if (
-        !loginForm ||
-        !emailInput ||
-        !passwordInput ||
-        !errorMessage ||
-        !loginButton
-    ) {
-        console.error("Required login HTML elements are missing.");
+    if (!errorMessage) {
+        console.error("Error message element is missing.");
         return;
     }
 
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
             errorMessage.style.color = "#d93025";
 
         }
-
     }
 
 
@@ -70,26 +68,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 6. CHECK SUPABASE CONNECTION
+    // 6. CHECK SUPABASE
 
     if (!db || !db.auth) {
 
         showMessage(
-            "Unable to connect to the server. Please check your connection."
+            "Unable to connect to the authentication server."
         );
 
-        loginButton.disabled = true;
+        if (loginButton) loginButton.disabled = true;
+        if (facebookLoginBtn) facebookLoginBtn.disabled = true;
 
-        console.error(
-            "Supabase client not found. Check supabase.js and script loading order."
-        );
+        console.error("Supabase connection not found.");
 
         return;
-
     }
 
 
-    // 7. VALIDATE EMAIL
+    // 7. EMAIL VALIDATION
 
     function isValidEmail(value) {
 
@@ -98,21 +94,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 8. VALIDATE PHONE NUMBER
+    // 8. PHONE VALIDATION
 
     function isValidPhone(value) {
-
-        // International phone format.
-        // Example: +9779812345678
 
         return /^\+[1-9]\d{7,14}$/.test(value);
 
     }
 
 
-    // 9. BUTTON LOADING
+    // 9. LOGIN BUTTON LOADING
 
     function setLoading(loading) {
+
+        if (!loginButton) return;
 
         loginButton.disabled = loading;
 
@@ -123,171 +118,205 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 10. LOGIN SYSTEM
+    // 10. EMAIL / PHONE LOGIN
 
-    loginForm.addEventListener("submit", async (event) => {
+    if (loginForm && emailInput && passwordInput && loginButton) {
 
-        event.preventDefault();
+        loginForm.addEventListener("submit", async (event) => {
 
-        clearMessage();
+            event.preventDefault();
 
-        const loginId = emailInput.value.trim();
-        const userPassword = passwordInput.value;
+            clearMessage();
 
-
-        // Check empty fields
-
-        if (!loginId && !userPassword) {
-
-            showMessage(
-                "Please enter your email or mobile number and password."
-            );
-
-            emailInput.focus();
-            return;
-
-        }
-
-        if (!loginId) {
-
-            showMessage(
-                "Please enter your email or mobile number."
-            );
-
-            emailInput.focus();
-            return;
-
-        }
-
-        if (!userPassword) {
-
-            showMessage("Please enter your password.");
-
-            passwordInput.focus();
-            return;
-
-        }
+            const loginId = emailInput.value.trim();
+            const userPassword = passwordInput.value;
 
 
-        // Identify email or phone number
+            // Check empty fields
 
-        const isEmail = isValidEmail(loginId);
-        const isPhone = isValidPhone(loginId);
-
-        if (!isEmail && !isPhone) {
-
-            showMessage(
-                "Enter a valid email address or international phone number, such as +9779812345678."
-            );
-
-            emailInput.focus();
-            return;
-
-        }
-
-
-        // Prepare login credentials
-
-        const credentials = isEmail
-            ? {
-                email: loginId,
-                password: userPassword
-            }
-            : {
-                phone: loginId,
-                password: userPassword
-            };
-
-
-        // Start login
-
-        setLoading(true);
-
-        try {
-
-            // Authenticate with Supabase
-
-            const { data, error } =
-                await db.auth.signInWithPassword(credentials);
-
-
-            // Handle login errors
-
-            if (error) {
-
-                console.error("Supabase login error:", error.message);
+            if (!loginId || !userPassword) {
 
                 showMessage(
-                    "Incorrect login details. Please check your email or phone number and password."
+                    "Please enter your email or mobile number and password."
                 );
 
-                return;
+                if (!loginId) {
+                    emailInput.focus();
+                } else {
+                    passwordInput.focus();
+                }
 
+                return;
             }
 
 
-            // Confirm successful authentication
+            // Identify login method
 
-            if (!data || !data.user || !data.session) {
+            const isEmail = isValidEmail(loginId);
+            const isPhone = isValidPhone(loginId);
+
+            if (!isEmail && !isPhone) {
 
                 showMessage(
-                    "Login could not be completed. Please try again."
+                    "Enter a valid email address or international phone number, such as +9779812345678."
                 );
 
+                emailInput.focus();
                 return;
-
             }
 
 
-            // LOGIN SUCCESSFUL
+            // Prepare credentials
 
-            console.log("Login successful.");
-            console.log("Authenticated user ID:", data.user.id);
+            const credentials = isEmail
+                ? {
+                    email: loginId,
+                    password: userPassword
+                }
+                : {
+                    phone: loginId,
+                    password: userPassword
+                };
 
-            showMessage(
-                "Login successful! Welcome to Connect.",
-                "success"
-            );
+
+            setLoading(true);
+
+            try {
+
+                // Authenticate with Supabase
+
+                const { data, error } =
+                    await db.auth.signInWithPassword(credentials);
 
 
-            // Redirect to home.html
+                if (error) {
 
-            loginButton.textContent = "Success! Redirecting...";
+                    console.error("Login error:", error.message);
 
-            setTimeout(() => {
+                    showMessage(
+                        "Incorrect login details. Please try again."
+                    );
 
-                window.location.replace("./home.html");
+                    return;
+                }
 
-            }, 1000);
 
-        }
+                if (!data?.user || !data?.session) {
 
-        catch (error) {
+                    showMessage(
+                        "Login could not be completed. Please try again."
+                    );
 
-            console.error("Unexpected login error:", error);
+                    return;
+                }
 
-            showMessage(
-                "Something went wrong. Please check your connection and try again."
-            );
 
-        }
+                // Successful login
 
-        finally {
+                showMessage(
+                    "Login successful! Welcome to Connect.",
+                    "success"
+                );
 
-            // Restore button only if redirect has not started
+                console.log("Authenticated user:", data.user.id);
 
-            if (!window.location.href.includes("home.html")) {
-                setLoading(false);
+
+                loginButton.textContent = "Success! Redirecting...";
+
+                setTimeout(() => {
+
+                    window.location.replace("./home.html");
+
+                }, 1000);
+
             }
 
-        }
+            catch (error) {
 
-    });
+                console.error("Login error:", error);
+
+                showMessage(
+                    "Something went wrong. Please try again."
+                );
+
+            }
+
+            finally {
+
+                if (loginButton.textContent !== "Success! Redirecting...") {
+                    setLoading(false);
+                }
+
+            }
+
+        });
+
+    }
 
 
-    // 11. FORGOT PASSWORD SYSTEM
+    // 11. OFFICIAL FACEBOOK OAUTH
 
-    if (forgotPasswordLink) {
+    if (facebookLoginBtn) {
+
+        facebookLoginBtn.addEventListener("click", async () => {
+
+            clearMessage();
+
+            facebookLoginBtn.disabled = true;
+            facebookLoginBtn.textContent = "Connecting to Facebook...";
+
+            try {
+
+                // Return to Connect after Facebook authentication
+
+                const redirectURL = new URL(
+                    "./home.html",
+                    window.location.href
+                ).href;
+
+
+                // Start official Facebook OAuth
+
+                const { error } = await db.auth.signInWithOAuth({
+
+                    provider: "facebook",
+
+                    options: {
+                        redirectTo: redirectURL
+                    }
+
+                });
+
+
+                if (error) {
+                    throw error;
+                }
+
+                // Supabase handles the redirect to Facebook.
+
+            }
+
+            catch (error) {
+
+                console.error("Facebook OAuth error:", error);
+
+                showMessage(
+                    "Unable to start Facebook login. Please try again."
+                );
+
+                facebookLoginBtn.disabled = false;
+                facebookLoginBtn.textContent = "Continue with Facebook";
+
+            }
+
+        });
+
+    }
+
+
+    // 12. FORGOT PASSWORD
+
+    if (forgotPasswordLink && emailInput) {
 
         forgotPasswordLink.addEventListener("click", async (event) => {
 
@@ -298,8 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const userEmail = emailInput.value.trim();
 
 
-            // Password reset requires an email address
-
             if (!userEmail || !isValidEmail(userEmail)) {
 
                 showMessage(
@@ -308,26 +335,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 emailInput.focus();
                 return;
-
             }
 
 
             try {
 
                 forgotPasswordLink.style.pointerEvents = "none";
-
                 forgotPasswordLink.style.opacity = "0.6";
 
-
-                // Password reset redirect address
 
                 const redirectURL = new URL(
                     "./book.html",
                     window.location.href
                 ).href;
 
-
-                // Send password reset email
 
                 const { error } = await db.auth.resetPasswordForEmail(
                     userEmail,
@@ -337,9 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                if (error) {
-                    throw error;
-                }
+                if (error) throw error;
 
 
                 showMessage(
@@ -371,8 +390,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 12. INITIALIZATION
+    // 13. INITIALIZATION
 
-    console.log("Connect authentication system initialized successfully.");
+    console.log("Connect authentication system initialized.");
 
 });
