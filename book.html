@@ -6,51 +6,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Connect - Login</title>
+    <title>Connect | Login</title>
 
-    <link rel="stylesheet" href="book.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js" defer></script>
-    <script src="book.js" defer></script>
+    <link rel="stylesheet" href="./book.css">
+    <script src="./book.js" defer></script>
 </head>
 
 <body>
 
-    <!-- Header -->
-    <header class="header">
-        <h1 class="brand">facebook</h1>
+    <!-- HEADER -->
+    <header class="brand-bar">
+        <h1 class="brand">Connect</h1>
     </header>
 
-    <!-- Main Login Section -->
-    <main class="main-container">
+    <!-- MAIN LOGIN AREA -->
+    <main class="page">
 
-        <section class="login-section">
+        <section class="login-container">
 
-            <h2>Log in to facebook</h2>
+            <h2>Log in to Connect</h2>
 
-            <form id="loginForm">
+            <form id="loginForm" class="login-form">
 
-             <input
-    type="text"
-    id="email"
-    placeholder="Email address or mobile number"
-    autocomplete="username"
-    required
->
+                <div class="form-group">
+                    <label for="email" class="sr-only">
+                        Email address or mobile number
+                    </label>
 
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Password"
-                    autocomplete="current-password"
-                    required
-                >
+                    <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        placeholder="Email address or mobile number"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
 
-                <!-- Error and success messages -->
-                <p id="errorMessage" class="message" aria-live="polite"></p>
+                <div class="form-group">
+                    <label for="password" class="sr-only">
+                        Password
+                    </label>
 
-                <button type="submit" class="login-button">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <p
+                    id="errorMessage"
+                    class="error-message"
+                    aria-live="polite">
+                </p>
+
+                <button
+                    type="submit"
+                    class="login-button">
                     Log in
                 </button>
 
@@ -62,33 +78,34 @@
 
             <div class="separator"></div>
 
-            <button
-                type="button"
-                class="create-button"
-                onclick="window.location.href='signup.html'">
+            <a href="signup.html" class="create-account">
                 Create new account
-            </button>
+            </a>
 
-            <p class="brand-footer">Connect Community</p>
+            <p class="community-label">
+                Connect Community
+            </p>
 
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- FOOTER -->
+    <footer>
 
+        <nav class="footer-links">
 
-        <div class="footer-links">
             <a href="#">About</a>
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
             <a href="#">Help</a>
             <a href="#">Contact</a>
-          
-        </div>
 
-        <p>Connect © 2026. All rights reserved.</p>
+        </nav>
+
+        <p>
+            Connect © 2026. All rights reserved.
+        </p>
 
     </footer>
 
