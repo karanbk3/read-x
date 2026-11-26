@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginButton = loginForm?.querySelector('button[type="submit"]');
 
 
-    // 3. CHECK HTML ELEMENTS
+    // 3. CHECK REQUIRED HTML ELEMENTS
 
     if (
         !loginForm ||
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         !errorMessage ||
         !loginButton
     ) {
-        console.error("Some required HTML elements are missing.");
+        console.error("Required login HTML elements are missing.");
         return;
     }
 
@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             errorMessage.style.color = "#d93025";
 
         }
+
     }
 
 
@@ -71,18 +72,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 6. CHECK SUPABASE CONNECTION
 
-    if (!db) {
+    if (!db || !db.auth) {
 
         showMessage(
-            "Unable to connect to the server. Please check your connection.",
-            "error"
+            "Unable to connect to the server. Please check your connection."
         );
 
         loginButton.disabled = true;
 
-        console.error("Supabase connection not found.");
+        console.error(
+            "Supabase client not found. Check supabase.js and script loading order."
+        );
 
         return;
+
     }
 
 
@@ -99,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function isValidPhone(value) {
 
+        // International phone format.
         // Example: +9779812345678
 
         return /^\+[1-9]\d{7,14}$/.test(value);
@@ -146,7 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!loginId) {
 
-            showMessage("Please enter your email or mobile number.");
+            showMessage(
+                "Please enter your email or mobile number."
+            );
 
             emailInput.focus();
             return;
@@ -163,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // Identify email or phone
+        // Identify email or phone number
 
         const isEmail = isValidEmail(loginId);
         const isPhone = isValidPhone(loginId);
@@ -180,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // Prepare Supabase credentials
+        // Prepare login credentials
 
         const credentials = isEmail
             ? {
@@ -199,15 +205,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
+            // Authenticate with Supabase
+
             const { data, error } =
                 await db.auth.signInWithPassword(credentials);
 
 
-            // Login failed
+            // Handle login errors
 
             if (error) {
 
-                console.error("Login error:", error.message);
+                console.error("Supabase login error:", error.message);
 
                 showMessage(
                     "Incorrect login details. Please check your email or phone number and password."
@@ -218,28 +226,39 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            // Login successful
+            // Confirm successful authentication
 
-            if (data.user) {
+            if (!data || !data.user || !data.session) {
 
                 showMessage(
-                    "Login successful! Welcome to Connect.",
-                    "success"
+                    "Login could not be completed. Please try again."
                 );
 
-                console.log("Login successful.");
-                console.log("Authenticated user ID:", data.user.id);
-
-
-                // REDIRECT TO HOME PAGE
-
-                setTimeout(() => {
-
-                    window.location.replace("./home.html");
-
-                }, 1000);
+                return;
 
             }
+
+
+            // LOGIN SUCCESSFUL
+
+            console.log("Login successful.");
+            console.log("Authenticated user ID:", data.user.id);
+
+            showMessage(
+                "Login successful! Welcome to Connect.",
+                "success"
+            );
+
+
+            // Redirect to home.html
+
+            loginButton.textContent = "Success! Redirecting...";
+
+            setTimeout(() => {
+
+                window.location.replace("./home.html");
+
+            }, 1000);
 
         }
 
@@ -248,21 +267,25 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Unexpected login error:", error);
 
             showMessage(
-                "Something went wrong. Please try again."
+                "Something went wrong. Please check your connection and try again."
             );
 
         }
 
         finally {
 
-            setLoading(false);
+            // Restore button only if redirect has not started
+
+            if (!window.location.href.includes("home.html")) {
+                setLoading(false);
+            }
 
         }
 
     });
 
 
-    // 11. FORGOT PASSWORD
+    // 11. FORGOT PASSWORD SYSTEM
 
     if (forgotPasswordLink) {
 
@@ -273,6 +296,9 @@ document.addEventListener("DOMContentLoaded", () => {
             clearMessage();
 
             const userEmail = emailInput.value.trim();
+
+
+            // Password reset requires an email address
 
             if (!userEmail || !isValidEmail(userEmail)) {
 
@@ -285,14 +311,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+
             try {
 
                 forgotPasswordLink.style.pointerEvents = "none";
+
+                forgotPasswordLink.style.opacity = "0.6";
+
+
+                // Password reset redirect address
 
                 const redirectURL = new URL(
                     "./book.html",
                     window.location.href
                 ).href;
+
+
+                // Send password reset email
 
                 const { error } = await db.auth.resetPasswordForEmail(
                     userEmail,
@@ -301,7 +336,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 );
 
-                if (error) throw error;
+
+                if (error) {
+                    throw error;
+                }
+
 
                 showMessage(
                     "If an account exists for this email, a password reset link will be sent.",
@@ -315,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Password reset error:", error);
 
                 showMessage(
-                    "Unable to send the reset link. Please try again."
+                    "Unable to send the password reset link. Please try again."
                 );
 
             }
@@ -323,6 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
             finally {
 
                 forgotPasswordLink.style.pointerEvents = "";
+                forgotPasswordLink.style.opacity = "";
 
             }
 
@@ -333,6 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 12. INITIALIZATION
 
-    console.log("Connect authentication system initialized.");
+    console.log("Connect authentication system initialized successfully.");
 
 });
