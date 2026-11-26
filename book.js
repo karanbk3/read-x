@@ -24,34 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. CHECK HTML ELEMENTS
 
-    if (!loginForm || !emailInput || !passwordInput ||
-        !errorMessage || !loginButton) {
-
+    if (
+        !loginForm ||
+        !emailInput ||
+        !passwordInput ||
+        !errorMessage ||
+        !loginButton
+    ) {
         console.error("Some required HTML elements are missing.");
         return;
-
     }
 
 
-    // 4. CHECK SUPABASE
-
-    if (!db) {
-
-        showMessage(
-            "Unable to connect to the server. Please check your connection.",
-            "error"
-        );
-
-        loginButton.disabled = true;
-
-        console.error("Supabase connection not found.");
-
-        return;
-
-    }
-
-
-    // 5. SHOW MESSAGE
+    // 4. SHOW MESSAGE
 
     function showMessage(message, type = "error") {
 
@@ -71,17 +56,33 @@ document.addEventListener("DOMContentLoaded", () => {
             errorMessage.style.color = "#d93025";
 
         }
-
     }
 
 
-    // 6. CLEAR MESSAGE
+    // 5. CLEAR MESSAGE
 
     function clearMessage() {
 
         errorMessage.textContent = "";
         errorMessage.style.display = "none";
 
+    }
+
+
+    // 6. CHECK SUPABASE CONNECTION
+
+    if (!db) {
+
+        showMessage(
+            "Unable to connect to the server. Please check your connection.",
+            "error"
+        );
+
+        loginButton.disabled = true;
+
+        console.error("Supabase connection not found.");
+
+        return;
     }
 
 
@@ -98,8 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function isValidPhone(value) {
 
-        // International format, for example:
-        // +9779812345678
+        // Example: +9779812345678
 
         return /^\+[1-9]\d{7,14}$/.test(value);
 
@@ -130,13 +130,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const loginId = emailInput.value.trim();
         const userPassword = passwordInput.value;
 
+
         // Check empty fields
 
         if (!loginId && !userPassword) {
 
-            showMessage("Please enter your email or mobile number and password.");
-            emailInput.focus();
+            showMessage(
+                "Please enter your email or mobile number and password."
+            );
 
+            emailInput.focus();
             return;
 
         }
@@ -144,8 +147,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!loginId) {
 
             showMessage("Please enter your email or mobile number.");
-            emailInput.focus();
 
+            emailInput.focus();
             return;
 
         }
@@ -153,8 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!userPassword) {
 
             showMessage("Please enter your password.");
-            passwordInput.focus();
 
+            passwordInput.focus();
             return;
 
         }
@@ -172,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             emailInput.focus();
-
             return;
 
         }
@@ -200,6 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const { data, error } =
                 await db.auth.signInWithPassword(credentials);
 
+
+            // Login failed
+
             if (error) {
 
                 console.error("Login error:", error.message);
@@ -213,19 +218,28 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            // Successful login
+            // Login successful
 
-            showMessage(
-                "Login successful! Welcome.",
-                "success"
-            );
+            if (data.user) {
 
-            console.log("Authenticated user ID:", data.user.id);
+                showMessage(
+                    "Login successful! Welcome to Connect.",
+                    "success"
+                );
 
-            console.log("Login successful.");
+                console.log("Login successful.");
+                console.log("Authenticated user ID:", data.user.id);
 
-            // The user remains on this page.
-            // You can add a redirect later.
+
+                // REDIRECT TO HOME PAGE
+
+                setTimeout(() => {
+
+                    window.location.replace("./home.html");
+
+                }, 1000);
+
+            }
 
         }
 
@@ -267,7 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
                 emailInput.focus();
-
                 return;
 
             }
