@@ -6,47 +6,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>READ-X | Read. Think. Share.</title>
+    <title>READ-X | Discover. Read. Grow.</title>
 
     <meta name="description"
-        content="READ-X is a platform to discover, read and share ideas.">
+        content="READ-X is a platform to discover publications, read ideas, and share knowledge.">
+
+    <meta name="theme-color" content="#0b1020">
 
     <link rel="stylesheet" href="./home.css">
+
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="header">
+    <!-- HEADER -->
+    <header class="header">
 
-    <a href="home.html" class="logo">
-        READ<span>-X</span>
-    </a>
-
-    <div class="header-actions">
-
-       
-<a href="./login.html?returnTo=admin.html" class="admin-link">
-    Admin
-</a>
-
-
-        <a href="login.html" class="login-link">
-            Sign in
+        <a href="./home.html" class="logo">
+            READ<span>-X</span>
         </a>
 
-    </div>
+        <div class="header-actions">
 
-</header>
+            <a href="./login.html?returnTo=admin.html"
+                class="admin-link">
+                Admin
+            </a>
+
+            <a href="./login.html"
+                class="login-link">
+                Sign in
+            </a>
+
+        </div>
+
+    </header>
 
 
     <!-- MAIN CONTENT -->
     <main>
 
-        <!-- WELCOME -->
+        <!-- WELCOME SECTION -->
         <section class="welcome-section">
 
-            <p class="welcome-label">WELCOME TO READ-X</p>
+            <p class="welcome-label">
+                WELCOME TO READ-X
+            </p>
 
             <h1>
                 Read. Think.
@@ -61,46 +66,45 @@
         </section>
 
 
-        <!-- ANNOUNCEMENTS -->
+        <!-- ANNOUNCEMENTS SECTION -->
         <section class="content-section">
 
             <div class="section-heading">
+
                 <div>
-                    <p class="section-label">STAY INFORMED</p>
-                    <h2>Announcements</h2>
-                </div>
 
-                <span class="live-indicator">● Updates</span>
-            </div>
-
-            <div id="announcementList" class="announcement-list">
-
-                <article class="announcement-card">
-
-                    <span class="announcement-tag">
-                        Welcome
-                    </span>
-
-                    <h3>Welcome to READ-X</h3>
-
-                    <p>
-                        Our platform is being developed.
-                        Stay connected for upcoming announcements.
+                    <p class="section-label">
+                        STAY INFORMED
                     </p>
 
-                    <small>READ-X Team</small>
+                    <h2>Announcements</h2>
 
-                </article>
+                </div>
+
+                <span class="live-indicator">
+                    ● Updates
+                </span>
+
+            </div>
+
+
+            <div id="announcementList"
+                class="announcement-list"
+                aria-live="polite">
+
+                <p>Loading announcements...</p>
 
             </div>
 
         </section>
 
 
-        <!-- ABOUT -->
+        <!-- ABOUT SECTION -->
         <section class="content-section about-section">
 
-            <p class="section-label">WHO WE ARE</p>
+            <p class="section-label">
+                WHO WE ARE
+            </p>
 
             <h2>About READ-X</h2>
 
@@ -119,43 +123,46 @@
         </section>
 
 
-        <!-- LATEST PLANS -->
+        <!-- APP UPDATES SECTION -->
         <section class="content-section">
 
-            <p class="section-label">WHAT'S COMING NEXT</p>
+            <div class="section-heading">
 
-            <h2>Latest Updates & Plans</h2>
+                <div>
 
-            <div id="updateList" class="update-list">
-
-                <article class="update-card">
-
-                    <span class="update-status">
-                        In development
-                    </span>
-
-                    <h3>READ-X Platform Launch</h3>
-
-                    <p>
-                        We are working to bring reading
-                        and publishing features together.
+                    <p class="section-label">
+                        WHAT'S COMING NEXT
                     </p>
 
-                </article>
+                    <h2>Latest Updates & Plans</h2>
+
+                </div>
+
+            </div>
+
+
+            <div id="updateList"
+                class="update-list"
+                aria-live="polite">
+
+                <p>Loading latest updates...</p>
 
             </div>
 
         </section>
 
 
-        <!-- EXPLORE -->
+        <!-- EXPLORE SECTION -->
         <section class="explore-section">
 
             <h2>Ready to explore?</h2>
 
-            <p>Discover publications and new ideas.</p>
+            <p>
+                Discover publications and new ideas.
+            </p>
 
-            <a href="read.html" class="explore-button">
+            <a href="./read.html"
+                class="explore-button">
                 Explore Publications
             </a>
 
@@ -167,30 +174,53 @@
     <!-- BOTTOM NAVIGATION -->
     <nav class="bottom-nav">
 
-        <a href="home.html" class="nav-item active">
+        <a href="./home.html"
+            class="nav-item active">
+
             <span>⌂</span>
             <small>Home</small>
+
         </a>
 
-        <a href="read.html" class="nav-item">
+
+        <a href="./read.html"
+            class="nav-item">
+
             <span>▤</span>
             <small>Read</small>
+
         </a>
 
-        <a href="share.html" class="nav-item share-nav">
+
+        <a href="./share.html"
+            class="nav-item share-nav">
+
             <span>＋</span>
             <small>Share</small>
+
         </a>
 
-        <a href="saved.html" class="nav-item">
+
+        <a href="./saved.html"
+            class="nav-item">
+
             <span>♡</span>
             <small>Saved</small>
+
         </a>
 
     </nav>
 
 
-    <script src="home.js"></script>
+    <!-- SUPABASE CONNECTION -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- PROJECT SUPABASE CONFIGURATION -->
+    <script src="./supabase.js"></script>
+
+    <!-- HOME PAGE FUNCTIONALITY -->
+    <script src="./home.js"></script>
 
 </body>
+
 </html>
