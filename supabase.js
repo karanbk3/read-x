@@ -5,16 +5,19 @@
 ========================================== */
 
 
-/* 1. SUPABASE PROJECT SETTINGS */
+/* 1. SUPABASE PROJECT URL */
 
-const READX_SUPABASE_URL =
+const SUPABASE_URL =
     "https://iqlfuhjoltpwnezswkmw.supabase.co";
 
-const READX_SUPABASE_KEY =
-    "YOUR_EXISTING_PUBLISHABLE_KEY";
+
+/* 2. SUPABASE PUBLISHABLE KEY */
+
+const SUPABASE_KEY =
+    "sb_publishable_hU61izoubK2oC0gr_3ZxnQ_1jX50V8K";
 
 
-/* 2. CHECK SUPABASE LIBRARY */
+/* 3. CHECK SUPABASE LIBRARY */
 
 if (
     !window.supabase ||
@@ -22,32 +25,31 @@ if (
 ) {
 
     console.error(
-        "READ-X ERROR: Supabase library was not loaded."
+        "READ-X ERROR: Supabase library is not loaded."
     );
 
     window.readxSupabase = null;
 
 } else {
 
-    /* 3. CREATE DATABASE CONNECTION */
+    /* 4. CREATE SUPABASE CLIENT */
 
     try {
 
-        window.readxSupabase =
-            window.supabase.createClient(
-                READX_SUPABASE_URL,
-                READX_SUPABASE_KEY,
-                {
-                    auth: {
-                        persistSession: true,
-                        autoRefreshToken: true,
-                        detectSessionInUrl: true
-                    }
+        window.readxSupabase = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY,
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
                 }
-            );
+            }
+        );
 
         console.log(
-            "READ-X: Supabase initialized successfully."
+            "READ-X: Supabase client initialized successfully."
         );
 
     } catch (error) {
@@ -55,10 +57,23 @@ if (
         window.readxSupabase = null;
 
         console.error(
-            "READ-X ERROR: Supabase initialization failed:",
+            "READ-X ERROR: Connection initialization failed.",
             error
         );
 
     }
+
+}
+
+
+/* 5. CONNECTION STATUS */
+
+if (window.readxSupabase) {
+
+    console.log("READ-X: Database client is ready.");
+
+} else {
+
+    console.error("READ-X: Database client is unavailable.");
 
 }
