@@ -1,4 +1,4 @@
-```javascript
+
 /* ==========================================
    READ-X | PUBLICATION SYSTEM
    Search, Categories, Reading and Saving
@@ -51,13 +51,12 @@ let currentUser = null;
 let currentArticle = null;
 
 let savedPublicationIds = new Set();
+let savingArticles = new Set();
 
 let loadingFailed = false;
 let saveSystemAvailable = true;
 
 let readerSaveButton = null;
-
-const savingArticles = new Set();
 
 
 /* 4. PUBLIC AUTHOR DISPLAY */
@@ -85,7 +84,7 @@ const defaultCategories = [
 ];
 
 
-/* 6. CHECK REQUIRED PAGE ELEMENTS */
+/* 6. CHECK REQUIRED HTML ELEMENTS */
 
 function checkPageElements() {
 
@@ -111,15 +110,15 @@ function checkPageElements() {
         readerArticleText
     };
 
-    const missing = Object.entries(requiredElements)
+    const missingElements = Object.entries(requiredElements)
         .filter(([name, element]) => !element)
         .map(([name]) => name);
 
-    if (missing.length > 0) {
+    if (missingElements.length > 0) {
 
         console.error(
             "READ-X: Missing HTML elements:",
-            missing
+            missingElements
         );
 
         return false;
@@ -185,10 +184,12 @@ async function loadCurrentUser() {
 
     } catch (error) {
 
-        console.error(
+        console.warn(
             "READ-X: User information could not be loaded:",
             error
         );
+
+        currentUser = null;
     }
 }
 
@@ -225,37 +226,37 @@ async function loadSavedArticleIds() {
         saveSystemAvailable = false;
 
         console.error(
-            "READ-X: Could not load saved articles.",
+            "READ-X: Saved articles could not be loaded:",
             error
         );
     }
 }
 
 
-/* 11. LOAD PUBLICATIONS */
+/* 11. LOAD PUBLICATIONS FROM SUPABASE */
 
 async function loadPublications() {
 
     if (!db) {
 
+        loadingFailed = true;
+
         showError(
-            "Supabase connection is missing. Check your supabase.js file."
+            "Supabase connection is missing. Please check your supabase.js file."
+        );
+
+        console.error(
+            "READ-X: window.readxSupabase is unavailable."
         );
 
         return;
     }
 
+    loadingFailed = false;
+
     showLoading();
 
     try {
-
-        /*
-           PUBLIC DATA ONLY.
-
-           author_name is intentionally excluded.
-           Original author identity is not needed
-           by the public publication page.
-        */
 
         const { data, error } = await db
             .from("publications")
@@ -270,13 +271,22 @@ async function loadPublications() {
                 created_at
             `)
             .eq("status", "published")
-            .order("created_at", { ascending: false });
+            .order("created_at", {
+                ascending: false
+            });
 
         if (error) throw error;
 
         publications = data || [];
 
-        loadingFailed = false;
+        console.log(
+            `READ-X: ${publications.length} publications received.`
+        );
+
+        /*
+           Loading account information is separate
+           from loading public publications.
+        */
 
         await loadCurrentUser();
 
@@ -288,23 +298,20 @@ async function loadPublications() {
 
         connectionMessage.hidden = true;
 
-        console.log(
-            `READ-X: ${publications.length} published articles loaded.`
-        );
-
         openArticleFromURL();
 
     } catch (error) {
+
+        loadingFailed = true;
 
         console.error(
             "READ-X: Publication loading failed:",
             error
         );
 
-        loadingFailed = true;
-
         showError(
-            "Unable to load articles: " + error.message
+            "Unable to load articles: " +
+            (error.message || "Unknown database error.")
         );
     }
 }
@@ -324,7 +331,9 @@ function createCategoryButtons() {
     const uniqueCategories = [
         ...new Set([
             ...defaultCategories,
-            ...databaseCategories.map(category => category.trim())
+            ...databaseCategories.map(category =>
+                category.trim()
+            )
         ])
     ];
 
@@ -379,15 +388,21 @@ function updateCategoryButtons() {
 
 /* 14. SEARCH ARTICLES */
 
-searchInput.addEventListener("input", () => {
+function handleSearch() {
 
-    searchTerm = searchInput.value.trim().toLowerCase();
+    searchTerm = searchInput.value
+        .trim()
+        .toLowerCase();
 
     clearSearch.hidden = searchTerm.length === 0;
 
     displayPublications();
+}
 
-});
+searchInput.addEventListener(
+    "input",
+    handleSearch
+);
 
 
 /* 15. CLEAR SEARCH */
@@ -414,11 +429,6 @@ function getFilteredPublications() {
         const matchesCategory =
             selectedCategory === "All" ||
             article.category === selectedCategory;
-
-        /*
-           Private author information is not included
-           in public article search.
-        */
 
         const searchableText = [
             article.title,
@@ -496,28 +506,29 @@ function createImagePlaceholder() {
 
 function updateSaveButton(button, article) {
 
-    const isSaved = savedPublicationIds.has(
-        String(article.id)
-    );
+    const articleId = String(article.id);
+
+    const isSaved = savedPublicationIds.has(articleId);
 
     button.textContent = isSaved
         ? "♥ Saved"
         : "♡ Save";
 
-    button.classList.toggle("saved", isSaved);
+    button.classList.toggle(
+        "saved",
+        isSaved
+    );
 
     button.setAttribute(
         "aria-pressed",
         String(isSaved)
     );
 
-    button.disabled = savingArticles.has(
-        String(article.id)
-    );
+    button.disabled = savingArticles.has(articleId);
 }
 
 
-/* 20. UPDATE ALL BUTTONS FOR ONE ARTICLE */
+/* 20. UPDATE ALL SAVE BUTTONS */
 
 function updateArticleSaveButtons(article) {
 
@@ -592,7 +603,7 @@ async function toggleSavedArticle(article) {
     } catch (error) {
 
         console.error(
-            "READ-X authentication error:",
+            "READ-X: Authentication error:",
             error
         );
 
@@ -613,14 +624,20 @@ async function toggleSavedArticle(article) {
             window.location.href
         );
 
-        destination.searchParams.set("id", articleId);
+        destination.searchParams.set(
+            "id",
+            articleId
+        );
 
         const loginURL = new URL(
             "./login.html",
             window.location.href
         );
 
-        loginURL.searchParams.set("mode", "login");
+        loginURL.searchParams.set(
+            "mode",
+            "login"
+        );
 
         loginURL.searchParams.set(
             "returnTo",
@@ -638,7 +655,7 @@ async function toggleSavedArticle(article) {
     if (!saveSystemAvailable) {
 
         alert(
-            "The saved articles system is not ready. Please check your saved_articles table and permissions."
+            "The saved articles system is unavailable. Please check your saved_articles table and permissions."
         );
 
         return;
@@ -700,7 +717,8 @@ async function toggleSavedArticle(article) {
         );
 
         alert(
-            "Could not update saved articles: " + error.message
+            "Could not update saved articles: " +
+            error.message
         );
 
     } finally {
@@ -745,7 +763,9 @@ function createPublicationCard(article) {
 
         image.onerror = () => {
 
-            image.replaceWith(createImagePlaceholder());
+            image.replaceWith(
+                createImagePlaceholder()
+            );
 
         };
 
@@ -753,7 +773,9 @@ function createPublicationCard(article) {
 
     } else {
 
-        card.appendChild(createImagePlaceholder());
+        card.appendChild(
+            createImagePlaceholder()
+        );
 
     }
 
@@ -786,7 +808,8 @@ function createPublicationCard(article) {
 
     author.className = "publication-author";
 
-    author.textContent = "By " + PUBLIC_AUTHOR_NAME;
+    author.textContent =
+        "By " + PUBLIC_AUTHOR_NAME;
 
 
     const description = document.createElement("p");
@@ -794,7 +817,8 @@ function createPublicationCard(article) {
     description.className = "publication-description";
 
     description.textContent =
-        article.description || "Open this article to read more.";
+        article.description ||
+        "Open this article to read more.";
 
 
     const saveButton = createSaveButton(article);
@@ -827,11 +851,17 @@ function createPublicationCard(article) {
 
     });
 
+
+    /* KEYBOARD ACCESS */
+
     card.addEventListener("keydown", event => {
 
         if (
             event.target === card &&
-            (event.key === "Enter" || event.key === " ")
+            (
+                event.key === "Enter" ||
+                event.key === " "
+            )
         ) {
 
             event.preventDefault();
@@ -850,13 +880,19 @@ function createPublicationCard(article) {
 
 function createReaderSaveButton(article) {
 
-    const newButton = createSaveButton(article, true);
+    const newButton = createSaveButton(
+        article,
+        true
+    );
 
     newButton.id = "readerSaveButton";
 
     newButton.style.marginBottom = "22px";
 
-    if (readerSaveButton && readerSaveButton.parentElement) {
+    if (
+        readerSaveButton &&
+        readerSaveButton.parentElement
+    ) {
 
         readerSaveButton.replaceWith(newButton);
 
@@ -877,6 +913,8 @@ function createReaderSaveButton(article) {
 
 function openArticle(article) {
 
+    if (!article) return;
+
     currentArticle = article;
 
     readerCategory.textContent =
@@ -893,8 +931,13 @@ function openArticle(article) {
     authorAvatar.textContent = PUBLIC_AUTHOR_INITIAL;
 
 
+    /* ARTICLE DESCRIPTION */
+
     readerDescription.textContent =
         article.description || "";
+
+
+    /* ARTICLE CONTENT */
 
     readerArticleText.textContent =
         article.content || "No article content available.";
@@ -906,6 +949,8 @@ function openArticle(article) {
 
     readerImage.removeAttribute("src");
 
+    readerImage.onerror = null;
+
     if (article.image_url) {
 
         readerImage.src = article.image_url;
@@ -913,13 +958,13 @@ function openArticle(article) {
         readerImage.alt =
             article.title || "Article image";
 
-        readerImage.hidden = false;
-
         readerImage.onerror = () => {
 
             readerImage.hidden = true;
 
         };
+
+        readerImage.hidden = false;
 
     }
 
@@ -932,13 +977,19 @@ function openArticle(article) {
     /* SWITCH TO READER */
 
     const header = document.querySelector(".read-header");
+
     const searchSection = document.querySelector(".search-section");
+
     const categorySection = document.querySelector(".category-section");
+
     const publicationsSection = document.querySelector(".publications-section");
 
     if (header) header.hidden = true;
+
     if (searchSection) searchSection.hidden = true;
+
     if (categorySection) categorySection.hidden = true;
+
     if (publicationsSection) publicationsSection.hidden = true;
 
     articleReader.hidden = false;
@@ -948,10 +999,19 @@ function openArticle(article) {
 
     const url = new URL(window.location.href);
 
-    url.searchParams.set("id", String(article.id));
+    url.searchParams.set(
+        "id",
+        String(article.id)
+    );
 
-    window.history.replaceState({}, "", url.href);
+    window.history.replaceState(
+        {},
+        "",
+        url.href
+    );
 
+
+    /* SCROLL TO TOP */
 
     window.scrollTo({
         top: 0,
@@ -1000,9 +1060,149 @@ function closeArticle() {
     articleReader.hidden = true;
 
     const header = document.querySelector(".read-header");
+
     const searchSection = document.querySelector(".search-section");
+
     const categorySection = document.querySelector(".category-section");
+
     const publicationsSection = document.querySelector(".publications-section");
 
     if (header) header.hidden = false;
+
     if (searchSection) searchSection.hidden = false;
+
+    if (categorySection) categorySection.hidden = false;
+
+    if (publicationsSection) publicationsSection.hidden = false;
+
+
+    /* REMOVE ARTICLE ID FROM URL */
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("id");
+
+    window.history.replaceState(
+        {},
+        "",
+        url.href
+    );
+
+
+    currentArticle = null;
+
+    window.scrollTo({
+        top: 0,
+        behavior: "auto"
+    });
+
+}
+
+
+/* 28. RESET SEARCH AND CATEGORIES */
+
+function resetAllFilters() {
+
+    selectedCategory = "All";
+
+    searchTerm = "";
+
+    searchInput.value = "";
+
+    clearSearch.hidden = true;
+
+    updateCategoryButtons();
+
+    displayPublications();
+
+}
+
+
+/* 29. HANDLE BROWSER BACK AND FORWARD */
+
+window.addEventListener("popstate", () => {
+
+    const params = new URLSearchParams(
+        window.location.search
+    );
+
+    const articleId = params.get("id");
+
+    if (!articleId) {
+
+        closeArticle();
+
+        return;
+    }
+
+    const article = publications.find(
+        item => String(item.id) === String(articleId)
+    );
+
+    if (article) {
+
+        openArticle(article);
+
+    }
+
+});
+
+
+/* 30. PAGE INITIALIZATION */
+
+function initializeReadPage() {
+
+    console.log("READ-X: Initializing publication page...");
+
+    if (!checkPageElements()) {
+
+        showError(
+            "Some required HTML elements are missing. Please check read.html."
+        );
+
+        return;
+    }
+
+
+    /* INITIAL LOADING */
+
+    showLoading();
+
+
+    /* RESET FILTERS */
+
+    resetFilters.addEventListener(
+        "click",
+        resetAllFilters
+    );
+
+
+    /* BACK TO PUBLICATIONS */
+
+    backToArticles.addEventListener(
+        "click",
+        closeArticle
+    );
+
+
+    /* LOAD DATABASE PUBLICATIONS */
+
+    loadPublications();
+
+}
+
+
+/* 31. START READ-X */
+
+if (document.readyState === "loading") {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeReadPage
+    );
+
+} else {
+
+    initializeReadPage();
+
+}
